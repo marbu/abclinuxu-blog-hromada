@@ -1,36 +1,22 @@
 # GNU tar, xkcd a BSD
 
 Pamatujete si na xkcd komix, kde atomová bomba pro odjištění vyžaduje validní
-příklad použití taru?
+příklad použití taru? Ať ano či ne, v tomto blogu se o nástroji GNU tar dozvíte
+co už dost možná stejně víte, případně co jste asi ani nechtěli vědět.
 
 <!--break-->
 
-<!-- osnova:
-xkcd: bomba
-archlinux script: https://wiki.archlinux.org/index.php/Bash/Functions#Extract
-tar mnemotech 'xaf'
-// bsd aux, cliff stoll
-sha1sum hack
-zajimave chovani:
-xkcd - new skill
-odpojeni od upc
-iptables detection
+Pro připomenutí (přece jen, ten díl vyšel už před pár lety):
 
-see also:
-https://www.gnu.org/software/tar/
-https://git.savannah.gnu.org/git/tar.git
-https://en.wikipedia.org/wiki/Tar_(computing)
--->
+[![tar](https://imgs.xkcd.com/comics/tar.png)](https://www.xkcd.com/1168/)
 
-Pro připomenutí (přece jen, ten díl vyšel zhruba před 5 lety):
-
-https://www.xkcd.com/1168/
+Poznámka: pro alt text musíte kliknout na odkaz.
 
 Hned z kraje musím přiznat, že mi tato narážka přišla tak trochu přehnaná.
 Tohle sice není v rámci vtipu nic divného, ale přece jenom tar nepatří mezi
-nástroje, jehož volby musím nějak často dohledávat. Což se nedá tak úplně říct o
-jiném populárním konzolovém nástroji, který by se v tomto kontextu vyjímal víc,
-ale git postrádá oproti taru další bombastické asociace (narážka na [tar
+nástroje, jehož volby musím nějak často dohledávat. Možná by se v tomto
+kontextu lépe vyjímal např. git, ale ten postrádá oproti taru další
+bombastické asociace (narážka na [tar
 bombu](https://en.wikipedia.org/wiki/Tar_(computing)#Tarbomb) nebo [Tsar
 bombu](https://en.wikipedia.org/wiki/Tsar_Bomba)
 ), což ho pro potřeby toho vtipu maličko diskvalifikuje.
@@ -41,7 +27,7 @@ wiki](https://wiki.archlinux.org/index.php/Bash/Functions#Extract), používat
 přímo `tar` bych bez man stránky nebo googlení taky nemohl. A přitom, jak jsem
 později taky zjistil, to není nijak krkolomné :-)
 
-Ve většině případů si vystačím tím, že `tar xf soubor.tar.gz` rozbalí archiv
+Ve většině případů si vystačím s tím, že `tar xf soubor.tar.gz` rozbalí archiv
 (kde `xf` si pamatuji jako e**x**tract **f**ile), zatímco pro zabalení souboru
 použiju `tar caf soubor.tar.gz soubor` (kde `caf` je **c**reate **a**rchive
 **f**ile) a typ archivu (v tomto případě `tar.gz`) tar hádá podle přípony
@@ -67,7 +53,7 @@ to `a` není od *archive*):
 tar --create --auto-compress --file soubor.tar.gz soubor
 ```
 
-Skutečnost ale bude asi trochu jednodušší na vysvětlení. Ty BSD volby
+Skutečnost ale může být jednodušší na vysvětlení. Ty BSD volby
 používám dost možná jen proto, že jsem to velmi dávno někde viděl a od té
 doby to tak pořád dokola ze setrvačnosti používám, anichž bych se na tím nějak
 extra zamýšlel. A trochu hádám, že tahle, možná trochu náhodná setrvačnost,
@@ -77,16 +63,16 @@ Podobně můžete různě po internetu vidět ukázky použití taru s písmenky
 `z` nebo `j`, které určují typ použitého kompresního programu (`z` je pro
 `gzip`, `j` pro `bzip2`).
 Pokud ale budete chtít použít např. `xz`, nevím jestli budete mít radost z
-toho, až z man stránky zjistíte že odpovídající jednopísmenková volba je `J`.
+toho, až z man stránky zjistíte, že odpovídající jednopísmenková volba je `J`.
 I když na druhou stranu, je to GNU tar ... takže je tam i rozumná dlouhá verze
 té volby `--xz` a díky tomu, že už jim došly písmenka, se žádné další
 jednoznakové zkratky pro kompresní algoritmy nepřidávájí.
-A přitom výše zmíněná volba auto compress je v GNU tar již skoro 10 let (podle
-changelog souboru od verze 1.20 vydané 14. 4. 2008), takže se to už mezitím
-aktuálně dostalo i do distribucí typu RHEL 6 nebo [Debianu
-oldstable](https://packages.debian.org/jessie/tar).
+A přitom výše zmíněná volba auto compress je v GNU tar již skoro 10 let
+(od verze 1.20 vydané 14. 4. 2008), takže se to už mezitím
+aktuálně dostalo i do distribucí typu [RHEL 6](http://ftp.redhat.com/redhat/linux/enterprise/6Server/en/os/SRPMS/tar-1.23-15.el6_8.src.rpm)
+nebo [Debianu oldstable](https://packages.debian.org/jessie/tar).
 
-Na druhou stranu ale hodně štěstí, pokud byste tuhle GNU fíčuru chtěli použít
+Na druhou stranu ale hodně štěstí, pokud byste tuhle GNU fičuru chtěli použít
 na např. OpenBSD:
 
 ```
@@ -106,7 +92,7 @@ Linuxová distribuce, FreeBSD nebo snad Solaris? Tuhle možnost bych ale dál
 dovolil pro potřeby tohoto blogu zanedbat. Konec konců, tento problém mají
 všechny tradiční unixové nástroje, ne jen tar.
 
-Když se ale na chvíli vrátím k těm volbám nástroje GNU tar a měl bych vybrat
+Když se ale na chvíli vrátím k volbám nástroje GNU tar a měl bych vybrat
 ještě jednu která stojí za zmínku, je to `t` neboli `--list`, která vypisuje
 seznam souborů v archivu:
 
@@ -117,44 +103,167 @@ passthrough.1
 passthrough.c
 ```
 
-Tím bychom měli výčet command line voleb, co si stojí za zapamatování
-kompletní. Na všechno ostatní je tu man stránka.
+Tím bychom měli výčet command line voleb pro GNU tar, co imho stojí za
+zapamatování, kompletní. Všechno ostatní hledám v man stránce, která ale dokáže
+už jen díky samotnému počtu funkcí implementovaných v GNU taru občas překvapit.
 
-složitější a složitější příklady
-pozor, jednoduchý případ může překvapit:
+Např. nedávno jsem potřeboval vygenerovat checksum ze všech souborů v archivu
+aniž bych celý archiv rozbaloval (jednak to není nutné a druhak jsem
+na to ani zrovna neměl volný diskový prostor) a ukázalo se, že tar umožňuje
+volbou `--to-command` specifikovat příkaz, kterému se předá obsah každého
+jednotlivého rozbaleného souboru na standardní vstup.
+Takže pomocí wrapper skriptu pro `sha1sum` (pro potřeby dalšího příkladu
+uloženého v `~/bin/tar-sha1-t.sh`):
 
+```
+#!/bin/bash
+# see also: man tar, https://unix.stackexchange.com/questions/303667/
+echo -n $(sha1sum) | sed 's/ .*$//'
+echo " $TAR_FILENAME"
+```
 
-<!-- zajimave chovani
+Lze nechat tar přímo vypsat sha1 checksum souborů v archivu:
 
-~~~
-[root@dhcp-126-79 abrt]# tar caf ccpp-2017-03-21-23:10:55-3667.tar.gz ccpp-2017-03-21-23:10:55-3667
-tar (child): Cannot connect to ccpp-2017-03-21-23: resolve failed
-~~~
+```
+$ tar xf foo.tar.gz --to-command=~/bin/tar-sha1-t.sh
+384dcab2b0e67e940406d1bbfd1b083c61319ce4 foobar.png
+e1c272d5abe7d339c4047d76294e7400c31e63b4 README
+```
 
-~~~
-$ tar cvzf ccpp-2017-03-21-23\:10\:55-3667.tar.gz ccpp-2017-03-21-23\:10\:55-3667/
-ccpp-2017-03-21-23:10:55-3667/
-ccpp-2017-03-21-23:10:55-3667/foobar.py
-tar (child): Cannot connect to ccpp-2017-03-21-23: resolve failed
+A nebo se taky může stát, že narazíte na vám dosud neznámou tar fičuru zcela
+náhodou. Např. v tomto případě jsem nejdřív moc nechápal, co se děje:
+
+```
+$ tar caf ccpp-2018-03-03-23:10:55-3667.tar.gz ccpp-2018-03-03-23:10:55-3667
+tar (child): Cannot connect to ccpp-2018-03-03-23: resolve failed
 tar: Child returned status 128
 tar: Error is not recoverable: exiting now
-~~~
+```
 
-Ah:
+Proč by jako tar měl komunikovat s někým po sítí na základě jména souboru? Ale
+po chvíli hledání se ukázalo, že:
 
-> If the archive file name includes a colon (‘:’), then it is assumed to be a
-> file on another machine. If the archive file is ‘user @host :file ’, then
-> file is used on the host host. The remote host is accessed using the rsh
-> program
--->
+> An archive name that has a colon in it specifies a file or device on a
+> remote machine. The part before the colon is taken as the machine name or IP
+> address, and the part after it as the file or device pathname, e.g.:
+>
+> --file=remotehost:/dev/sr0
+>
+> An optional username can be prefixed to the hostname, placing a @ sign
+> between them.
+
+A pokud se vám to nelíbí, tak GNU tar nabízí volbu:
+
+> --force-local
+> Archive file is local even if it has a colon.
+
+Takže následující příkaz již funguje bezvadně:
+
+```
+$ tar --force-local -caf ccpp-2018-03-03-23:10:55-3667.tar.gz ccpp-2018-03-03-23:10:55-3667
+```
+
+Ale pokud se takový archiv pokusíte přečíst a zapomenete na tu dvojtečku, opět
+máte problém:
+
+```
+$ tar tf ccpp-2018-03-03-23\:10\:55-3667.tar.gz
+tar: Cannot connect to ccpp-2018-03-03-23: resolve failed
+```
+
+Ať žijí rozumné výchozí volby a zpětná kompatibilita. Schválně jsem se musel
+podívat, jak dlouho tam tohle chování je a v NEWS souboru jsem našel:
+
+```
+Version 1.11 - Michael Bushnell, 1992-09.
+Version 1.10.16 - 1992-07.
+Version 1.10.15 - 1992-06.
+Version 1.10.14 - 1992-05.
+Version 1.10.13 - 1992-01.
+
+* Remote archive names no longer have to be in /dev: any file with a
+':' is interpreted as remote.  If new option --force-local is given,
+then even archive files with a ':' are considered local.
+```
+
+Upřímě nechápu, jak tohle někomu přišlo jako rozumný nápad, ale asi mi chybí
+historický kontext. A asi není ani třeba dodávat, že tar z OpenBSD tohle
+neimplementuje.
+
+Důležitý detail, který jsem zatím vynechal je, jakým protokolem se tar chce
+na vzdálený stroj připojit:
+
+> By default, the remote host is accessed via the rsh(1) command.  Nowadays it
+> is common to use ssh(1) instead.
+
+Takže dneska už ssh, což si můžete sami zkusit na vhodně pojmenovaném tarballu:
+
+```
+$ tar tf localhost:foo.tar.gz
+The authenticity of host 'localhost (::1)' can't be established.
+ECDSA key fingerprint is SHA256:TgLgqk9xkWb2oGtBRgk1vKPvWzbgdkp0InR0PZHXnbQ.
+ECDSA key fingerprint is MD5:48:16:9c:eb:b8:22:0f:ab:22:b4:71:a5:3e:54:2c:7f.
+Are you sure you want to continue connecting (yes/no)?
+```
+
+:-)
+
+To už možná stojí za úvahu, zda takové [chování není natolik
+podivné](http://www.abclinuxu.cz/blog/c/2018/1/shellova-zabava/diskuse#5), že
+by se dalo považovat do jisté míry za bezpečnostní problém. Např. by šlo
+pojmenovat tarball tak, že při pokusu o jeho rozbalení [vás UPC
+odpojí](http://www.abclinuxu.cz/portal/poradna/show/434589#2) nebo by šlo
+pokusit se o deanomizaci nepozorného uživate tor sítě. Ale oba ty příklady jsou
+víc absurdní než praktické.
+
+O něco lepší by bylo např. nachystat na vzdáleném
+serveru tarball s jiným obsahem, který by si oběť nevědomky stáhla a rozbalila
+místo skutečného obsahu tarballu - teda za předpokladu, že nikomu nebude divné,
+že v názvu tarballu je vaše doména a název souboru, že odhadnete jaký login
+oběť používá, že budete mít ssh public key oběti a že oběť buď pro tento ssh
+klíč nepoužívá heslo nebo jej má v cache ssh agenta a k tomu všemu by bylo taky
+dobré, aby fingerprint vašeho ssh serveru oběť už měla mezi known hosts. Něco
+málo z toho by mohl usnadnit github a jeho automatické zveřejňování public ssh
+klíčů ...  ale to už si připadám jako v jiném xkcd komixu, jen místo příběhu s
+hackováním regexpů v perlu na laně dosaďte tento odstavec, je to asi tak stejně
+praštěné:
+
+[![regular expressions](https://imgs.xkcd.com/comics/regular_expressions.png)](https://www.xkcd.com/208/)
+
+Nicméně, vážně to funguje:
+
+```
+$ cd ~/tmp
+$ touch good-file bad-file
+$ tar caf bad.tar.gz bad-file
+$ tar --force-local -caf localhost:bad.tar.gz good-file
+$ cp bad.tar.gz ~
+$ tar tf localhost:bad.tar.gz
+bad-file
+$ tar --force-local -tf localhost:bad.tar.gz
+good-file
+```
+
+Opačná varianta, kdy někomu poradíte jak "správně" pojmenovat tarball aby pak
+posléze nahrál data na váš server je asi taky možná, ale ještě uhozenější.
 
 <!-- anketa
-používám volbu:
-* gnu
-* unix
-* bsd
 
-bombu z komixu bych:
-* odjistil
-* ...
+V příkazové řádce používám pro tar volby typu:
+* bsd `(c)`
+* unix `(-c)
+* gnu `(--create)`
+
+Bombu z komixu bych:
+* s klidem odjistil
+* nechal/přinutil explodovat
+
+Tu věc s dvojteckou v názvu tarballu jsem:
+* neznal
+* znal a nepochopil
+* znal a používal
+
+Je ta věc s dvojteckou bezpečnostní problém?:
+* ano
+* ne
 -->
