@@ -6,7 +6,7 @@ co už dost možná stejně víte, případně co jste asi ani nechtěli vědě
 
 Pro připomenutí (přece jen, ten díl vyšel už před pár lety):
 
-[![tar](https://imgs.xkcd.com/comics/tar.png)](https://www.xkcd.com/1168/)
+[![tar](tar.png)](https://www.xkcd.com/1168/)
 
 Poznámka: pro alt text musíte kliknout na odkaz.
 
@@ -228,7 +228,7 @@ klíčů ...  ale to už si připadám jako v jiném xkcd komixu, jen místo př
 hackováním regexpů v perlu na laně dosaďte tento odstavec (I know GNU tar colon
 hack!), je to asi tak stejně praštěné:
 
-[![regular expressions](https://imgs.xkcd.com/comics/regular_expressions.png)](https://www.xkcd.com/208/)
+[![regular expressions](regular_expressions.png)](https://www.xkcd.com/208/)
 
 Nicméně, vážně to funguje:
 
