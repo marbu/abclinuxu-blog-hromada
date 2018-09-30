@@ -38,7 +38,7 @@ na webu ESA jako [From green to brown in a month](http://www.esa.int/spaceinimag
 včetně shrnutí co je na obrázku a odkazu na 10MB jpeg v plném rozlišení.
 
 České zpravodajské weby, co se mi podařilo dohledat (není to ani náhodou
-kompletní seznam), obrázek nějakým způsobem přejaly následující den, 27 čevrna,
+kompletní seznam), obrázek nějakým způsobem přejaly následující den, 27 června,
 jako:
 
 * aktualne.cz: [Ze zelené se stala hnědá. Satelitní snímky odhalily, jak sucho změnilo tvář Evropy](https://zpravy.aktualne.cz/zahranici/prekryvacka-sucho/r~0667fd6c917511e8915e0cc47ab5f122/)
