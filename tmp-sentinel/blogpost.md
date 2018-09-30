@@ -51,39 +51,30 @@ obrázky](http://www.esa.int/spaceinimages/ESA_Multimedia/Copyright_Notice_Image
 neumožňují libovolné komerční využití (problém budete mít např. při použití v
 reklamě nebo pokud je na obrázku někdo konkrétní poznat), ale převzetí do
 novin, wikipedie nebo na blog je imho ok s tím, že je třeba uvést ESA jako
-autora obrázku, ideálně včetně jména družice.
+autora obrázku, nejlépe včetně jména družice.
 Btw hezké je, že další licenci, kterou ESA pro některé obrázky používá, je
 [Creative Commons Attribution-ShareAlike 3.0
 IGO](https://creativecommons.org/licenses/by-sa/3.0/igo/).
 
-Z tohoto pohledu většinou není problém a v článku nebo u popisku obrázku je
-uvedená ESA jako zdroj snímku:
-
-* aktualne.cz: "Evropská vesmírná agentura (ESA) zveřejnila satelitní snímky
-  ..."
-* idnes.cz: "Evropská kosmická agentura zveřejnila ..." a "Srovnávací snímek z
-  družice Sentinel-3 ukazuje ..."
-* novinky.cz: "Záběr dánského města Slagelse z družice Sentinel-2 ..."
-* zive.cz: "... ukazují data ze satelitního systému Sentinel" a "Foto:
-  Sentinel-3, ESA" (včetně odkazu na zdroj)
-
-I když tedy musím dotat, že se to neobešlo bez různých chybiček:
-
-* aktualne.cz: nepíšou, co je to za družici
-* na idnes.cz v prvním odstavci zároveň píšou, že jde o *letecké* snímky" :)
-* novinky.cz: udávají jako zdroj Profimedia.cz, což je poněkud podivné
-
-Ideálně bych si představoval, že v tomto případě se dozvím:
+Jinými slovy vlastně stačí, když v článku k té fotce napíšou něco jako "Photo:
+ESA/Copernicus Sentinel". I když ideálně bych si představoval, že v tomto
+případě se dozvím:
 
 * Že autorem je ESA
 * Název družice, co snímek pořídila.
 * Odkaz na původní zdroj, tj. url, pomocí které se dopátrám jak původní verze,
-  tak licence, pod kterou je obrázek zveřejněný (kdyby ta fotka ale byla
+  tak licence, pod kterou je obrázek zveřejněný (nicméně kdyby ta fotka byla
   zveřejněna pod creative commons licencí, tak bych ale čekal, že odkaz na
   licenci bude také přímo uveden).
 
-Což z těch 4 článků udělali jen na zive.cz.
+Což z těch 4 článků udělali jen na zive.cz a ostatní alespoň více méně splnily
+licenci a uvedli ESA jako zdroj snímku, i když:
 
+* aktualne.cz nepíšou, co je to za družici (což ale licence přímo nevyžaduje)
+* na idnes.cz v prvním odstavci zároveň píšou, že jde o *letecké* snímky" :)
+* novinky.cz: udávají jako zdroj profimedia.cz, což je poněkud podivné
+
+Což mě přivádí k otázce:
 Proč je v dnešní době takový problém uvést celý odkaz na zdroj, ke kterému mám
 stejný přístup jako autor článku? Přijde mi to jako přežitek z dob, kdy se
 noviny na internetu nevydávaly a odkázat se přímo na zdroj (který stejně na
@@ -93,8 +84,11 @@ nedává smysl:
 * není jasné, zda autor článku primární zdroj vůbec použil, což mu ubírá na
   důvěryhodnosti
 * není jednoduše možné zjistit si detaily, pokud mne článek zaujme (např. v
-  tomto případě bych mohl chtít stáhnout původní verzi ve vysokém rozlišení
-  a použít ji dál, v souladu s licencí ESA)
+  tomto případě bych mohl chtít stáhnout původní verzi ve vysokém rozlišení)
+* není možné zjistit, pod jakou licencí je zdroj dostupný (např. abych fotku
+  mohl dál použít v souladu s licencí, např. k jinému podobnému srovnání), aniž
+  bych se musel ptát autora článku (který ve skutečnosti autorská práva na tu
+  fotku nedrží)
 * není možné ověřit si tvrzení v článku (tady např. jak interpretovaly fotku
   noviny s tím, co tvrdí ESA)
 * není možné hodnotit autora a obsahu článku na základě zdrojů, které použil,
@@ -103,4 +97,6 @@ nedává smysl:
 * není možné přímo vyhledat články na základě použitého zdroje (např. by mě
   zajímalo, jestli stejný zdroj nepoužil ještě někdo jiný, v jiném kontextu)
 
-Rád bych ale zdůraznil, že toto se týká jen
+Na druhou stranu je ale nutné si uvědomit, že ne všechno je možné takto
+odkázat. Tímto myslím jen zdroje, které jsou přímo přes url někde na internetu
+dostupné.
