@@ -55,3 +55,52 @@ autora obrázku, ideálně včetně jména družice.
 Btw hezké je, že další licenci, kterou ESA pro některé obrázky používá, je
 [Creative Commons Attribution-ShareAlike 3.0
 IGO](https://creativecommons.org/licenses/by-sa/3.0/igo/).
+
+Z tohoto pohledu většinou není problém a v článku nebo u popisku obrázku je
+uvedená ESA jako zdroj snímku:
+
+* aktualne.cz: "Evropská vesmírná agentura (ESA) zveřejnila satelitní snímky
+  ..."
+* idnes.cz: "Evropská kosmická agentura zveřejnila ..." a "Srovnávací snímek z
+  družice Sentinel-3 ukazuje ..."
+* novinky.cz: "Záběr dánského města Slagelse z družice Sentinel-2 ..."
+* zive.cz: "... ukazují data ze satelitního systému Sentinel" a "Foto:
+  Sentinel-3, ESA" (včetně odkazu na zdroj)
+
+I když tedy musím dotat, že se to neobešlo bez různých chybiček:
+
+* aktualne.cz: nepíšou, co je to za družici
+* na idnes.cz v prvním odstavci zároveň píšou, že jde o *letecké* snímky" :)
+* novinky.cz: udávají jako zdroj Profimedia.cz, což je poněkud podivné
+
+Ideálně bych si představoval, že v tomto případě se dozvím:
+
+* Že autorem je ESA
+* Název družice, co snímek pořídila.
+* Odkaz na původní zdroj, tj. url, pomocí které se dopátrám jak původní verze,
+  tak licence, pod kterou je obrázek zveřejněný (kdyby ta fotka ale byla
+  zveřejněna pod creative commons licencí, tak bych ale čekal, že odkaz na
+  licenci bude také přímo uveden).
+
+Což z těch 4 článků udělali jen na zive.cz.
+
+Proč je v dnešní době takový problém uvést celý odkaz na zdroj, ke kterému mám
+stejný přístup jako autor článku? Přijde mi to jako přežitek z dob, kdy se
+noviny na internetu nevydávaly a odkázat se přímo na zdroj (který stejně na
+internetu nebyl) prostě nešlo. Ale držet se tohoto principu dnes imho
+nedává smysl:
+
+* není jasné, zda autor článku primární zdroj vůbec použil, což mu ubírá na
+  důvěryhodnosti
+* není jednoduše možné zjistit si detaily, pokud mne článek zaujme (např. v
+  tomto případě bych mohl chtít stáhnout původní verzi ve vysokém rozlišení
+  a použít ji dál, v souladu s licencí ESA)
+* není možné ověřit si tvrzení v článku (tady např. jak interpretovaly fotku
+  noviny s tím, co tvrdí ESA)
+* není možné hodnotit autora a obsahu článku na základě zdrojů, které použil,
+  což mu opět ubírá na důvěryhodnosti (v případě snímku ESA ale není přímo
+  aplikovatelné)
+* není možné přímo vyhledat články na základě použitého zdroje (např. by mě
+  zajímalo, jestli stejný zdroj nepoužil ještě někdo jiný, v jiném kontextu)
+
+Rád bych ale zdůraznil, že toto se týká jen
