@@ -1,5 +1,5 @@
 ---
-title: Copernicus a Copyright
+title: Sentinel 3, Sucho a Copyright
 author: marbu
 lang: cs-CZ
 rights: cc by-sa 4.0
@@ -31,7 +31,7 @@ autorského práva také více méně aktuální.
 
 [![](From_green_to_brown_in_a_month_node_full_image_2.jpg)](http://www.esa.int/spaceinimages/Images/2018/07/From_green_to_brown_in_a_month)
 
-Zdroj: ESA, obsahuje upravená data z programu Copernicus Sentinel (2018)
+Zdroj: ESA, obsahuje upravená data z družice Sentinel 3 (2018)
 
 Tento obrázek vyšel 26 června 2018 v sekci [Space in Images](http://www.esa.int/spaceinimages/Images)
 na webu ESA jako [From green to brown in a month](http://www.esa.int/spaceinimages/Images/2018/07/From_green_to_brown_in_a_month),
@@ -72,9 +72,9 @@ licenci a uvedli ESA jako zdroj snímku, i když:
 
 * aktualne.cz nepíšou, co je to za družici (což ale licence přímo nevyžaduje)
 * na idnes.cz v prvním odstavci zároveň píšou, že jde o *letecké* snímky" :)
-* novinky.cz: udávají jako zdroj profimedia.cz, což je poněkud podivné
+* novinky.cz udávají jako zdroj profimedia.cz, což je poněkud podivné
 
-Což mě přivádí k otázce:
+A to mě přivádí k otázce:
 Proč je v dnešní době takový problém uvést celý odkaz na zdroj, ke kterému mám
 stejný přístup jako autor článku? Přijde mi to jako přežitek z dob, kdy se
 noviny na internetu nevydávaly a odkázat se přímo na zdroj (který stejně na
@@ -97,6 +97,8 @@ nedává smysl:
 * není možné přímo vyhledat články na základě použitého zdroje (např. by mě
   zajímalo, jestli stejný zdroj nepoužil ještě někdo jiný, v jiném kontextu)
 
-Na druhou stranu je ale nutné si uvědomit, že ne všechno je možné takto
-odkázat. Tímto myslím jen zdroje, které jsou přímo přes url někde na internetu
-dostupné.
+Ale aby bylo jasno: nečekám, že novináři budou pro každou pitomost hledat a
+odkazovat na internetový zdroj, když velká část oveřování a vůbec
+novinářské práce se na internetu neodehrává. Ale pokud už pracují s nějakou
+netriviální informací, kterou přes internet získali a je pro kohokoli dostupná,
+proč se na to neodkázat?
