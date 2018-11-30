@@ -32,6 +32,7 @@ kompletní seznam), tento snímek nějakým způsobem přejaly následující de
 * idnes.cz: [Spálený kontinent. Satelity ukázaly, jak rekordní vedra decimují Evropu](https://zpravy.idnes.cz/pozary-sucho-evropa-satelity-snimky-druzice-fn5-/zahranicni.aspx?c=A180727_122334_zahranicni_aha)
 * novinky.cz: [Úmorná vedra sužují celou Evropu](https://www.novinky.cz/zahranicni/evropa/479017-umorna-vedra-suzuji-celou-evropu.html) (v článku je použit jiný družicový snímek, ale to nic zásadního nemění)
 * zive.cz: [Evropa zhnědla: Družice Sentinel-3 ji vyfotila v červnu a teď](https://vtm.zive.cz/clanky/evropa-zhnedla-druzice-sentinel-3-ji-vyfotila-v-cervnu-a-ted/sc-870-a-194339/default.aspx)
+* in-pocasi.cz: [Západní Evropa čelí vlně veder, teploty dosahují 38 °C](https://www.in-pocasi.cz/clanky/vyznacne/vlna-veder-27.7.2018/)
 
 Všimněme si že [standardní licenční podmínky obrázků z toho webu
 ESA](http://www.esa.int/spaceinimages/ESA_Multimedia/Copyright_Notice_Images)
@@ -54,8 +55,8 @@ případě se dozvím:
   zveřejněna pod creative commons licencí, tak bych ale čekal, že odkaz na
   licenci bude také přímo uveden).
 
-A to z těch 4 článků udělali jen na zive.cz a ostatní alespoň více méně splnily
-licenci a uvedli ESA jako zdroj snímku, i když:
+A to z těch 5 článků udělali jen na zive.cz a in-pocasi.cz a ostatní alespoň
+více méně splnily licenci a uvedli ESA jako zdroj snímku, i když:
 
 * aktualne.cz nepíšou, co je to za družici (na druhou stranu ta licence to
   přímo nevyžaduje),
