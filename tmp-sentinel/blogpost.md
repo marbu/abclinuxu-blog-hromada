@@ -90,20 +90,102 @@ netriviální informací, kterou přes internet získali a je pro kohokoli dost
 proč se na to neodkázat? Navíc pokud už nějaký zdroj autor použil, přijde mi
 neseriózní to neuvést nebo zmínit bez plného odkazu.
 
-## Program Copernicus a družice Sentinel
+## Stahujeme data z družice Sentinel
 
-Důvod proč je v tomto případě užitečné vědět, že snímek vychází z dat
-pořízených družicí [Sentinel 3](https://en.wikipedia.org/wiki/Sentinel-3), je
-ten, že většina dat pořízená v rámci [programu
-Copernicus](https://sentinels.copernicus.eu/web/sentinel/home) (kam Sentinely
-patří) jsou volně dostupná.
+Důvod proč je v tomto případě užitečné vědět z jaké družice snímek vychází je
+ten, že  v rámci [programu
+Copernicus](https://en.wikipedia.org/wiki/Copernicus_Programme), kam [družice
+Sentinel patří](https://sentinels.copernicus.eu), je [velká část pořízených dat
+volně
+dostupná](https://www.copernicus.eu/en/access-data/conventional-data-access-hubs).
 
-<!-- TODO
-good and bad: data, dokumentace a složitost toho všeho
-openstreet map
-stahování dat
-Srovnání s chmi ... a rozhlas
--->
+Tohle mě zaujalo a tak jsem si řekl, fajn, to bych mohl zkusit stáhnout data
+pro ten snímek, co prošel v srpnu novinama, nebo zkusit vytáhnout nějaký snímek
+pro Českou republiku ... jak těžké to asi bude?
+Ale rychle se ukázalo, že to není z podstaty věci úplně
+přímočaré. Tedy ne že by Copernicus neposkytoval dostatek dokumentace nebo
+možností jak data stáhnout. Je to spíš naopak, kromě syrových dat jsou k
+dispozici i data různě zpracovaná. A aby byl člověk schopný tyto data nějak
+rozumně použít, měl by aspoň trochu chápat jak funguje senzor jehož
+data zpracovává a co vlastně měří, a rozumět datovému formátu nebo knihovnám k
+němu. Sentinel družic je aktuálně 6 a každá má trochu jinou sadu
+přístrojů, a pro každý měřící přístroj je k dispozici minimálně technická a
+uživatelská dokumentace plus popis datového formátu ...
+
+Takže abych se pohnul trochu dál, je třeba trochu zpřesnit cíl mého malého
+pokusu. Z popisku [toho snímku na webu
+ESA](http://www.esa.int/spaceinimages/Images/2018/07/From_green_to_brown_in_a_month)
+jde zjistit, že data byla pořízena pomocí tzv. [*ocean and land colour
+instrument* (OLCI)](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-3/data-products/olci)
+[družice Sentinel-3](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-3).
+Z popisu toho OLCI mi pak vychází, že bych měl chtít získat
+[Level-1](https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-3-olci/processing-levels/level-1)
+data.
+[Existuje několik způsobů jak stahovat data z programu
+Sentinel](https://www.copernicus.eu/en/access-data/conventional-data-access-hubs),
+ale v mém případě bych měl získat všechno co potřebuji přes [Copernicus Open
+Access
+Hub](https://scihub.copernicus.eu/), kde je ale pro stahování nutná
+registrace, při které je tředa dát akorát pozor na tzv. *domain* co nás
+zajímá, což je v našem případě *Land* (CLMS), ale imho můžete mít zájem o
+cokoli s vyjímkou *Security* domény, která je v režimu omezeného přístupu.
+
+Když teď na tom copernicus scihub portálu zadáme výše uvedené parametry do
+vyhledávání, omezíme se na datum pořízení snímků (*sensing date* 2018-06-28
+nebo 2018-07-25) a vyznačíme oblast zájmu někde plus mínus kolem kanálu La
+Manche, opravdu dostaneme data, co se zdá se shodují se tím snímkem zveřejněným
+na webu ESA. Zajímavé je, že ve skutečnosti jsou to data ze dvou snímků:
+
+![](scihubsearch.2018-06-28.png){ width=50% }
+
+Btw hezké je, že ten scihub používá jako mapový podklad open street map.
+
+![](scihub.match.2018-06-28.png){ width=50% }
+
+Takže teď už můžu konečně stáhnout nějaká data. Pokud bych věděl co
+dělám, mohl bych pro každý snímek stáhnout jen jednotlivé datové datové
+soubory, co mě zajímají. Ale protože tohle není můj případ, stáhnu prostě
+všechny soubory snímku zabalené v zip souboru, co má zhruba 650 MB. Celkově
+jsou to v mém případě 4 zip soubory, co dohromady mají něco kolem 2.6G (protože
+stahuji 2 snímky ve 2 různých okamžicích).
+Btw [licence takto získaných družicových
+dat](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice)
+vám umožňuje dělat s nimi cokoli za předpokladu, že v předepsaném formátu
+odkážete na projekt Copernicus Sentinel a dáte najevo, zda jste data nějak
+modifikovali nebo zpracovávali.
+
+Tak, a co teď s takovou kolekcí zip souborů? Mohl bych si nastudovat
+dokumentaci a data zpracovat ručně, ale v tomto případě si vystačím s tím, že
+použiju [nástroj SNAP se Sentinel
+Toolboxem](http://step.esa.int/main/download/), [vyvíjeném v rámci ESA pod
+GLPv3 licencí](https://github.com/senbox-org/). Zaujalo mě, že je to v javě,
+ale zrovna pro ten [Sentinel 3 toolbox by mělo být možné psát pluginy nebo
+skripty in pythonu](http://step.esa.int/main/toolboxes/sentinel-3-toolbox/)
+(sám jsem to ale nezkoušel).
+
+TODO
+
+Btw původně jsem chtěl odkázat primárně na [český web s popisem stahování dat z
+programu Copernicus](http://copernicus.gov.cz/pristup-k-druzicovym-datum), ale
+zdá se být ne zcela udržovaný. Niceméně nějaký obecný úvod můžou dát slidy
+z workshopu [Access to Copernicus Data: Overview and
+Introduction](http://workshop.copernicus.eu/sites/default/files/content/attachments/ajax/access-to-data-3-submodules-praha-final.pdf).
+
+## Článek Českého rozhlasu
+
+Dostupnost dat z družic Sentinel pak např. využili v Českém rozhlasu, kde 9.
+srpna vyšel článek [Méně zelené, více hnědé. Porovnejte si, jak vypadá letošní
+a loňské léto v Česku z
+vesmíru](https://www.irozhlas.cz/zpravy-domov/pocasi-praha-hradec-kralove-leto-2018-sucho-vedro_1808180600_ako),
+který je imho nejzajímavější z těch všech článků o letošním suchu vycházejících
+z dat družice Sentinel (už kvůli tomu, že snímky zachycují Česko a ne
+Británii), ale zároveň musel dát i nejvíce práce. A asi ani nepřekvapí, že
+popis zdroje dat mají správně, přesně podle licence.
+
+Pokud někoho zarazilo, že mi nevadí absence html odkazu na původní zdroj, v
+tomto případě to je ok, protože satelitní snímky použité v článku rozhlasu
+poskytla jedna čeká GIS firma zpracovávající Sentinel data, a tak ani
+neexistuje url, co by mohli použít.
 
 ## Pohledem reformy autorských práv
 
