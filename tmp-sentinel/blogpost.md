@@ -11,6 +11,8 @@ vegetaci v krajině letošní sucho. To je samo o sobě sice docela poučné, al
 chci se tu na to podívat z pohledu odkazování na primární zdroje a
 používání dat s otevřenou licencí. Což je vzhledem k finišující reformně
 autorského práva také více méně aktuální.
+A jako bonus zkusíme stáhnout a nějak zobrazit data ze satelitu Copernicus
+Sentinel 3.
 
 <!--break-->
 
@@ -107,10 +109,13 @@ přímočaré. Tedy ne že by Copernicus neposkytoval dostatek dokumentace nebo
 možností jak data stáhnout. Je to spíš naopak, kromě syrových dat jsou k
 dispozici i data různě zpracovaná. A aby byl člověk schopný tyto data nějak
 rozumně použít, měl by aspoň trochu chápat jak funguje senzor jehož
-data zpracovává a co vlastně měří, a rozumět datovému formátu nebo knihovnám k
+data zpracovává a co vlastně měří, a navíc trochu rozumět datovému formátu nebo
+knihovnám a nástrojům k
 němu. Sentinel družic je aktuálně 6 a každá má trochu jinou sadu
 přístrojů, a pro každý měřící přístroj je k dispozici minimálně technická a
-uživatelská dokumentace plus popis datového formátu ...
+uživatelská dokumentace plus popis datového formátu. Přístroje na sondách mají
+za cíl sledování zemského povrchu, atmosféry a oceánů, a jsou různých druhů,
+jako např. spektrometry, radiometry nebo radary.
 
 Takže abych se pohnul trochu dál, je třeba trochu zpřesnit cíl mého malého
 pokusu. Z popisku [toho snímku na webu
@@ -133,12 +138,14 @@ cokoli s vyjímkou *Security* domény, která je v režimu omezeného přístupu
 Když teď na tom copernicus scihub portálu zadáme výše uvedené parametry do
 vyhledávání, omezíme se na datum pořízení snímků (*sensing date* 2018-06-28
 nebo 2018-07-25) a vyznačíme oblast zájmu někde plus mínus kolem kanálu La
-Manche, opravdu dostaneme data, co se zdá se shodují se tím snímkem zveřejněným
-na webu ESA. Zajímavé je, že ve skutečnosti jsou to data ze dvou snímků:
+Manche, dostaneme 2 výsledky (to naznačuje, že ten zveřejněný snímek byl složen
+z dat dvou po sobě jdoucích snímkování). Btw hezké je, že ten scihub používá
+jako mapový podklad open street mapu:
 
 ![](scihubsearch.2018-06-28.png){ width=50% }
 
-Btw hezké je, že ten scihub používá jako mapový podklad open street map.
+A po prozkoumání náhledu se opravdu zdá, že dostáváme data, co se shodují se
+tím snímkem zveřejněným na webu ESA:
 
 ![](scihub.match.2018-06-28.png){ width=50% }
 
@@ -154,16 +161,83 @@ vám umožňuje dělat s nimi cokoli za předpokladu, že v předepsaném formá
 odkážete na projekt Copernicus Sentinel a dáte najevo, zda jste data nějak
 modifikovali nebo zpracovávali.
 
-Tak, a co teď s takovou kolekcí zip souborů? Mohl bych si nastudovat
-dokumentaci a data zpracovat ručně, ale v tomto případě si vystačím s tím, že
-použiju [nástroj SNAP se Sentinel
-Toolboxem](http://step.esa.int/main/download/), [vyvíjeném v rámci ESA pod
-GLPv3 licencí](https://github.com/senbox-org/). Zaujalo mě, že je to v javě,
-ale zrovna pro ten [Sentinel 3 toolbox by mělo být možné psát pluginy nebo
-skripty in pythonu](http://step.esa.int/main/toolboxes/sentinel-3-toolbox/)
-(sám jsem to ale nezkoušel).
+Tak, a co teď s takovou hromadou zip archivů? Mohl bych si nastudovat
+[dokumentaci k Sentinel 3 OLCI Level 1](https://sentinel.esa.int/web/sentinel/user-guides/sentinel-3-olci/document-library/-/asset_publisher/hkf7sg9Ny1d5/content/sentinel-3-olci-product-data-format-specification-level-1-products?redirect=https%3A%2F%2Fsentinel.esa.int%2Fweb%2Fsentinel%2Fuser-guides%2Fsentinel-3-olci%2Fdocument-library%3Fp_p_id%3D101_INSTANCE_hkf7sg9Ny1d5%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-1%26p_p_col_count%3D1)
+a data zpracovat ručně, ale asi udělám líp, když použiju [nástroj SNAP se
+Sentinel Toolboxem](http://step.esa.int/main/download/), [vyvíjeném v rámci ESA
+pod GLPv3 licencí](https://github.com/senbox-org/). Nicméně jak už jsem psal,
+nějaký základní přehled o tom, co za data tam jsou je nutné mít i tak. Zaujalo
+mě, že je to celé v javě, ale zrovna pro ten [Sentinel 3
+toolbox](http://step.esa.int/main/toolboxes/sentinel-3-toolbox/) [by mělo být
+možné psát pluginy nebo skripty v
+pythonu](https://github.com/techforspace/sentinel)
+(sám jsem to ale zatím nezkoušel).
+Ale ta java ... instalátor je klasický shell skript kombinovaný s tarballem,
+který bundluje dokonce i JRE od Oracle, eh. Na druhou stranu, zdrojáky k tomu
+jsou, takže kdyby někdo moc chtěl, má možnost to zabalit nějak normálně.
 
-TODO
+Mezi [tutoriály na webu toho SNAP
+projektu](http://step.esa.int/main/doc/tutorials/) se pak dá najít pár pěkných
+ukázek s postupy popisujícími přesně to, o co se tu zhruba snažím:
+
+* [How to Visualise Sentinel 3 Data](https://www.youtube.com/watch?v=3PjTwEMlCMs)
+  (jediný rozdíl je v tom, že oni tam stahují data z
+  [coda.eumetsat.int](https://coda.eumetsat.int/), zatímco já jsem použil
+  copernicus scihub)
+* [SNAP - Overview](https://www.youtube.com/watch?v=DibAtfHoc6U)
+* [SNAP - Mosaicing](https://www.youtube.com/watch?v=PTmLs9BRSKE)
+
+Nejdřív jsem se se pokusil data z těch 2 snímků zkombinovat do jednoho
+snímku tak, aby byla použita všechna data na úkor rozlišení a deformace
+výsledného obrázku:
+
+![](snap_mosaicing.png){ width=50% }
+
+Takže můj výsledný obrázek nemá tak vysoké rozlišení jako by mohl mít a navíc
+vypadá divně, ale zato jsem vzhledem k tomu mediálně vděčnému snímku udělal
+*uncrop* :-)
+
+![](snap_mosaicing_result.png){ width=50% }
+
+Když se ale podíváme na srovnání měho výsledku pro oba dny, nevidíme tak
+výrazný rozdíl, jako na tom obrázku z ESA:
+
+![](snap_compare_results1.png){ width=50% }
+
+Tedy pokud použijeme nativní rozlyšení, rozdíl tam na první pohled je, jen je
+jiný než na tom zveřejněném obrázku.
+
+![](snap_compare_results2.png){ width=50% }
+
+To je proto, že jsem tu analýzu dat tak trochu odbyl a při generování RGB
+obrázku použil default nastavení. Ono je potřeba si uvědomit, že to OLCI to
+není ani tak klasický foťák jako spíš spektroskop, z kterého místo RGB trojice
+leze 21 růzých hodnot pro různé frekvenční rozsahy.
+
+![](snap_mosaicing_bands.png){ width=50% }
+
+To má výhodu v tom, že se lze zaměřit jen na určitou část spektra a ignorovat
+zbytek, ale pokud chceme získat klasický barevný obrázek, musíme těch 21 kanálů
+nějak nakombinovat. A jen tak pro představu, ten výchozí přepočet, co jsem
+použil vypadá nějak takto (neptejte se mě proč):
+
+``` {.kod}
+r := log(1.0 + 0.01 * Oa01_radiance + 0.09 * Oa02_radiance + 0.35 * Oa03_radiance + 0.04 * Oa04_radiance + 0.01 * Oa05_radiance + 0.59 * Oa06_radiance + 0.85 * Oa07_radiance + 0.12 * Oa08_radiance + 0.07 * Oa09_radiance + 0.04 * Oa10_radiance)
+g := log(1.0 + 0.26 * Oa03_radiance + 0.21 * Oa04_radiance + 0.50 * Oa05_radiance + Oa06_radiance + 0.38 * Oa07_radiance + 0.04 * Oa08_radiance + 0.03 * Oa09_radiance + 0.02 * Oa10_radiance)
+b := log(1.0 + 0.07 * Oa01_radiance + 0.28 * Oa02_radiance + 1.77 * Oa03_radiance + 0.47 * Oa04_radiance + 0.16 * Oa05_radiance)
+```
+
+Takže pokud bych vážně chtěl porovnat jak moc krajina na snímcích usichá, měl
+bych zohlednit na jakém frekvenčím rozsahu odráží sluneční světlo chlorofyl.
+Např. analýza zemědělských plodin.
+Dost možná je pro to v tom toolboxu nějaké podpůrná funkce. Tak daleko jsem se
+do toho ale nepouštěl.
+
+Teď taky lépe chápeme důvod, proč licence vyžaduje uvést "zpracovaná data".
+
+Pro nějaké reálné použití lze výsledek z nástroje SNAP vyexportovat do formátu
+[GeoTIFF](https://en.wikipedia.org/wiki/GeoTIFF) a pak to načíst např. v
+[QGIS](https://www.qgis.org/en/site/) a zkombinovat např. s nějakými mapou.
 
 Btw původně jsem chtěl odkázat primárně na [český web s popisem stahování dat z
 programu Copernicus](http://copernicus.gov.cz/pristup-k-druzicovym-datum), ale
@@ -178,14 +252,15 @@ srpna vyšel článek [Méně zelené, více hnědé. Porovnejte si, jak vypadá
 a loňské léto v Česku z
 vesmíru](https://www.irozhlas.cz/zpravy-domov/pocasi-praha-hradec-kralove-leto-2018-sucho-vedro_1808180600_ako),
 který je imho nejzajímavější z těch všech článků o letošním suchu vycházejících
-z dat družice Sentinel (už kvůli tomu, že snímky zachycují Česko a ne
-Británii), ale zároveň musel dát i nejvíce práce. A asi ani nepřekvapí, že
-popis zdroje dat mají správně, přesně podle licence.
+z dat družice Sentinel, ale zároveň musel dát i nejvíce práce. A to nejen kvůli
+tomu, že snímky v článku zachycují Česko a ne Británii. Pokud si chcete přečíst
+nějaký z těch článků, přečtěte si tenhle.
 
-Pokud někoho zarazilo, že mi nevadí absence html odkazu na původní zdroj, v
+A asi ani nepřekvapí, že popis zdroje dat mají správně, přesně podle licence :)
+Pokud někoho zarazilo, že mi tu nevadí absence html odkazu na původní zdroj, v
 tomto případě to je ok, protože satelitní snímky použité v článku rozhlasu
-poskytla jedna čeká GIS firma zpracovávající Sentinel data, a tak ani
-neexistuje url, co by mohli použít.
+nejsou přímo převzaté z nějakého webu, ale poskytla jedna česká GIS firma
+(co mj. zpracovává Sentinel data), a tak ani takové url neexistuje.
 
 ## Pohledem reformy autorských práv
 
