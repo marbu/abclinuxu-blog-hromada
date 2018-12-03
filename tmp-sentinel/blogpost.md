@@ -65,7 +65,7 @@ více méně splnily licenci a uvedli ESA jako zdroj snímku, i když:
 
 A to mě přivádí k otázce:
 Proč je v dnešní době takový problém uvést v internetovém článku celý odkaz na
-zdroj? Chápu že v době, kdy noviny vycházeli pouze na papíře, se lépe na zdroj
+zdroj? Chápu že v době, kdy noviny vycházely pouze na papíře, se lépe na zdroj
 prostě odkázat nešlo, ale dnes má často čtenář článku na internetu přístup ke
 zdroji stejně snadný jako autor. Přijde mi to jako nějaký historický přežitek,
 případně lenost. Autor článku si moc práce neušetří a jen mu to ubírá
@@ -77,18 +77,20 @@ důvěryhodnosti, protože není možné:
 * zjistit pod jakou licencí je zdroj dostupný (např. abych fotku
   mohl dál použít v souladu s licencí, např. k jinému podobnému srovnání), aniž
   bych se musel ptát autora článku (který ve skutečnosti autorská práva na tu
-  fotku nedrží)
+  fotku stejně nedrží)
 * ověřit si tvrzení v článku (tady např. jak interpretovaly fotku
   noviny s tím, co tvrdí ESA)
 * přímo vyhledat články na základě použitého zdroje (např. by mě mohlo
   zajímat, jestli stejný zdroj nepoužil ještě někdo jiný, v jiném kontextu)
 
 Ale aby bylo jasno, nečekám, že novináři budou pro každou pitomost hledat a
-odkazovat se na internetový zdroj, když velká část oveřování a vůbec
+odkazovat se na internetový zdroj, když velká část ověřování a vůbec
 novinářské práce se na internetu neodehrává. Ale pokud už pracují s nějakou
 netriviální informací, kterou přes internet získali a je pro kohokoli dostupná,
 proč se na to neodkázat? Navíc pokud už nějaký zdroj autor použil, přijde mi
-neseriózní to neuvést nebo zmínit bez plného odkazu.
+neseriózní to neuvést nebo zmínit bez plného odkazu. Na druhou stranu pokud
+autor neuvádí zdroj protože ho vlastně ani neví, nemá se o nějaké serióznosti
+vůbec cenu bavit.
 
 ## Copernicus Sentinel
 
@@ -98,28 +100,28 @@ Copernicus](https://en.wikipedia.org/wiki/Copernicus_Programme), kam [družice
 Sentinel patří](https://sentinels.copernicus.eu), je [velká část pořízených dat
 volně
 dostupná](https://www.copernicus.eu/en/access-data/conventional-data-access-hubs).
+[Licence těcho
+dat](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice)
+vám pak umožňuje dělat s nimi cokoli za předpokladu, že v předepsaném formátu
+odkážete na projekt Copernicus Sentinel a dáte najevo, zda jste data nějak
+modifikovali nebo zpracovávali.
 
 Tohle mě zaujalo a tak jsem si řekl, že bych pro ten snímek, co prošel v srpnu
 novinama, mohl zkusit stáhnout zdrojová družicová data. Podrobnému popisu toho,
 jak jsem data stahoval a pokoušel se je zpracovat (tj. aspoň nějak zobrazit)
-věnuji později samostatný zápisek. Nicměné rychle se ukázalo, že to není z
-podstaty věci úplně přímočaré, ale na druhou stranu je fajn, že tyto data jsou
-volně k dispozici včetně dokumentace a různých tutoriálů, a že [software, který
+věnuji později samostatný zápisek. Nicméně rychle se ukázalo, že to není z
+podstaty věci úplně přímočaré. Každopádně je ale fajn, že tyto data jsou
+takto k dispozici včetně dokumentace a různých tutoriálů, a že [software, který
 ESA pro zpracování těchto dat vyvíjí](http://step.esa.int/main/download/) je
 licencován pod GPLv3.
 
-Moje výsledné obrázky, co jsem ze stáhnutých dat dostal, sice nemají tak vysoké
-rozlišení jako by mohl mít a navíc vypadají trochu divně, ale zato jsem
+Moje výsledné obrázky, co jsem z těch dat dostal, sice nemají tak vysoké
+rozlišení jako by mohly teoreticky mít a navíc vypadají trochu divně, ale zato
+jsem
 vzhledem k tomu mediálně vděčnému snímku udělal *uncrop*, protože se ukázalo,
 že ten byl složen ze 2 po sobě jsoucích družicových snímků :-)
 
 ![](snap_compare_results1.png){ width=50% }
-
-Btw [licence takto získaných družicových
-dat](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice)
-vám umožňuje dělat s nimi cokoli za předpokladu, že v předepsaném formátu
-odkážete na projekt Copernicus Sentinel a dáte najevo, zda jste data nějak
-modifikovali nebo zpracovávali.
 
 ## Článek Českého rozhlasu
 
@@ -160,15 +162,15 @@ jak by to měl ten upload filter jako poznat?
 Stejně tak bych asi měl problém s odkazy na články, protože jsem v nich použil
 velkou část titulku. Takže bych buď musel koupit příslušnou licenci nebo použít
 jako text odkazu url. Možnost, že bych vymýšlel pro každý článek nový titulek
-tak, abych se vyhnul povinosti licencovat článek, jsem si dovolil zavrhnout.
+tak, abych se vyhnul povinnosti licencovat článek, jsem si dovolil zavrhnout.
 Ale ono je to v tomto případě asi stejně jedno, protože pokud by bylo
 omezeno hromadné strojové zpracování článků, asi bych ani nebyl schopný vůbec
-dohledat, které články ten družicový snímek v daném období použili, a tak bych
+dohledat, které články ten družicový snímek v daném období použily, a tak bych
 ani neměl na co odkazovat.
 
 &lt;ironie&gt;
 Už vidím, jak tohle pomůže bojovat se zavádějícími zprávami, pomůže zvýšit
 zisky vydavatelství a zlepší kvalitu médií obecně. Možná by nebylo špatné pro
-další zlepšení situace zavést i novinám povinost používat stejný upload filter
+další zlepšení situace zavést i novinám povinnost používat stejný upload filter
 před publikováním článku.
 &lt;/ironie&gt;
