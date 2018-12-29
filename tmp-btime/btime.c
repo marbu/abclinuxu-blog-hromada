@@ -16,7 +16,7 @@ int main(int argc, char**argv)
 	int rc = statx(AT_FDCWD, argv[1], AT_SYMLINK_NOFOLLOW, STATX_BTIME, &stx);
 	if (rc == 0) {
 		if (stx.stx_btime.tv_sec != 0) {
-			printf("%u.%u\n", stx.stx_btime.tv_sec, stx.stx_btime.tv_nsec);
+			printf("@%u.%u\n", stx.stx_btime.tv_sec, stx.stx_btime.tv_nsec);
 		} else {
 			printf("-\n");
 		}
