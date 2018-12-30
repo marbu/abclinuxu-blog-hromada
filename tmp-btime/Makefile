@@ -6,5 +6,8 @@ preview.html: blogpost.md
 blogpost.html: blogpost.md
 	pandoc -f markdown -t html $(PANDOCFLAGS) $? -o $@
 
+blogpost.pdf: blogpost.md
+	pandoc -s -f markdown -t latex $(PANDOCFLAGS) $? -o $@
+
 clean:
-	rm -f blogpost.html preview.html
+	rm -f blogpost.html blogpost.pdf preview.html
