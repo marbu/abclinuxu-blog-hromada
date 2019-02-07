@@ -3,17 +3,25 @@ title: Jak je to s podporou času vzniku souboru na GNU Linux distribucích
 author: marbu
 lang: cs-CZ
 rights: cc by-sa 4.0
+papersize: a4
+geometry: margin=2.5cm
+links-as-notes: false
 ...
 
 Zarazilo vás někdy, že příkaz
 [`stat`](http://man7.org/linux/man-pages/man1/stat.1.html) z [GNU
 Coreutils](https://www.gnu.org/software/coreutils/) na Linuxu vypisuje kromě
-klasické trojice unixových časových značek `access`, `modify` a `change` navíc
-také jakési `birth`, u kterého ale hodnota chybí?
-Co tu vůbec to prázdné `birth` dělá? A máme to celé číst tak, že Linux čas
+klasické trojice unixových časových značek *access*, *modify* a *change* navíc
+také jakési *birth*, u kterého ale hodnota chybí?
+Co tu vůbec to prázdné *birth* dělá? A máme to celé číst tak, že Linux čas
 vzniku souboru podporuje, ale ne u každého souborového systému?
+<!-- TODO: dopsat shrnutí o čem to je -->
 
 <!--break-->
+
+Pro lepší představu o čem tu píšu. Na následující ukázce je stat zavolaný
+na souboru uloženém na etx4. To vše na Fedoře 29, s GNU Coreutils 8.30 a jádrem
+4.19.8:
 
 ``` {.kod}
 $ stat public_html
@@ -28,11 +36,6 @@ Change: 2018-12-09 02:51:38.961313721 +0100
  Birth: -
 $
 ```
-
-&lt;poznámka&gt;
-Jen pro úplnost, na ukázce výše je stat zavolaný na souboru uloženém na etx4.
-To vše na Fedoře 29, s Coreutils 8.30 a jádrem 4.19.8.
-&lt;/poznámka&gt;
 
 ## Souborové časové značky na Unixových systémech
 
