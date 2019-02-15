@@ -430,15 +430,100 @@ ext4
 
 ## Podpora btime v GNU Linux distribucích
 
-TODO: timeline (jádro, glibc, gnulib, gnu coreutils, ...)
+Takže podporu btime v Linuxových souborových systémech bychom měli. Ale aby nám
+to k něčemu bylo, je potřeba mít možnost předat tuto informaci z kernelu do
+userspace. Jak už jsem zmínil výše, [btime mělo být možné získat pomocí volání
+`xstat()`, jehož začlenění se zadrhlo](https://lwn.net/Articles/397442/), aby
+se [po několika letech vynořilo v nové podobě jako
+`statx()`](https://lwn.net/Articles/685791/), které se nakonec do jádra
+dostalo a je tak dostupné od
+[Linuxu 4.11](https://kernelnewbies.org/Linux_4.11#statx.282.29.2C_a_modern_stat.282.29_alternative)
+z dubna 2017.
+[Podpora v glibc](https://sourceware.org/bugzilla/show_bug.cgi?id=21297)
+existuje od
+[glibc 2.28](https://www.sourceware.org/ml/libc-alpha/2018-08/msg00003.html)
+ze srpna 2018. To znamená, že např. na Fedoře 29 se to dá už vyzkoušet.
+
+Následující kód ukazuje, jak pomocí
+[`statx(2)`](http://man7.org/linux/man-pages/man2/statx.2.html) přečíst pro
+daný soubor právě pouze btime. To že je možné jádru říct o která metadata máme
+zájem, díky čemuž se jádro nemusí namáhat se zjišťováním hodnot které stejně
+nepoužijeme, je mimochodem jedna z hlavních výhod volání `statx(2)` oproti
+`stat(2)`.
 
 ~~~ {.kod .c include="btime.c"}
 ~~~
 
+Pokud máte na své distribuce glibc starší než 2.28 ale přitom jádro máte
+alespoň 4.11, musíte zavolat `statx(2)` s pomocí `syscall(2)`.
+
+Program vypisuje pouze samotnou časovou značku v unixovém formátu, zavináč na
+začátku je pro zjednodušení dekódování času pomocí nástroje `date`:
+
+~~~
+$ make btime
+cc     btime.c   -o btime
+$ ./btime btime
+@1550254543.238843517
+$ ./btime btime | date -f- --rfc-3339=ns
+2019-02-15 19:15:43.238843517+01:00
+~~~
+
+Když si připojíme ext4 oddíl z předchozích pokusů, dostáváme očekávaný
+výsledek:
+
+~~~ {.kod}
+$ ./btime /mnt/test_ext4/testfile | date -f- --rfc-3339=ns
+2019-02-15 15:00:14.135799387+01:00
+~~~
+
+Bohužel, tímto podpora btime v základních komponentách GNU Linux distribucí
+zatím končí. Stat z GNU Coreutils stále vypisuje btime jako "-" ani žádný jiný
+základní nástroj jako např. `ls` nebo `tar` s btime přes `statx(2)` na Linuxu
+pracovat neumí.
+
+Díval jsem se na zdroják stat z coreutils, a ukázalo se, že díky hacku
+řešící podporu btime pro Solaris není až tak těžké tam btime s pomocí
+`statx(2)` dotat:
+
 ~~~ {.kod .diff include="linux-btime-hack.patch"}
 ~~~
 
-## Co to btime vlastně znamená?
+Podstata tohoto patche je v tom, že se volá klasický `stat(2)` jako předtím a
+pak si navíc přes `statx(2)` ještě řekneme o btime. Na hraní to stačí:
+
+~~~ {.kod}
+$ touch ~/tmp/test
+$ ./stat ~/tmp/test
+  File: /home/martin/tmp/test
+  Size: 0               Blocks: 0          IO Block: 4096   regular empty file
+Device: fd07h/64775d    Inode: 7377267     Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/  martin)   Gid: ( 1000/  martin)
+Access: 2019-02-15 19:52:40.499658659 +0100
+Modify: 2019-02-15 19:52:40.499658659 +0100
+Change: 2019-02-15 19:52:40.499658659 +0100
+ Birth: 2019-02-15 19:52:40.499658659 +0100
+$ touch ~/tmp/test
+$ ./stat ~/tmp/test
+  File: /home/martin/tmp/test
+  Size: 0               Blocks: 0          IO Block: 4096   regular empty file
+Device: fd07h/64775d    Inode: 7377267     Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/  martin)   Gid: ( 1000/  martin)
+Access: 2019-02-15 19:52:46.598671520 +0100
+Modify: 2019-02-15 19:52:46.598671520 +0100
+Change: 2019-02-15 19:52:46.598671520 +0100
+ Birth: 2019-02-15 19:52:40.499658659 +0100
+~~~
+
+Tohle "řešení" ale není zcela vhodné na začlenění do coreutils, protože používá
+zbytečně 2 volání jádra místo jednoho, a celé je to navíc postavená nad jiným
+hackem. K tomu abych stat upravil nějak rozumně jsem se ale zatím nedostal, a
+podle toho, že na coreutils listu mi nikdo neodpověděl, bych řekl, že na
+tom aktuálně nikdo nedělá.
+
+## Co to btime vlastně znamená a k čemu je dobré?
+
+TODO: kompatibilita a windows, samba, ntfs
 
 TODO: example
 
@@ -456,6 +541,7 @@ Přehledové články k tématu:
   wikipedie,
 * [RHEL7 XFS Is A Step Backwards Forensically](https://blog.fpmurphy.com/2014/06/rhel7-xfs-is-a-step-backwards-forensically.html): popisuje jak z XFS a ext4 dostat btime pomocí debug nástrojů
 * [How to find creation date of file?](https://unix.stackexchange.com/questions/91197/how-to-find-creation-date-of-file)
+* [task_diag and statx()](https://lwn.net/Articles/685791/) z lwn.net (2016)
 
 Historické zdroje:
 
