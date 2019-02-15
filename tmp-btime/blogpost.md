@@ -539,7 +539,6 @@ Přehledové články k tématu:
 * Heslo [Comparison of file
   systems](https://en.wikipedia.org/wiki/Comparison_of_file_systems) z anglické
   wikipedie,
-* [RHEL7 XFS Is A Step Backwards Forensically](https://blog.fpmurphy.com/2014/06/rhel7-xfs-is-a-step-backwards-forensically.html): popisuje jak z XFS a ext4 dostat btime pomocí debug nástrojů
 * [How to find creation date of file?](https://unix.stackexchange.com/questions/91197/how-to-find-creation-date-of-file)
 * [task_diag and statx()](https://lwn.net/Articles/685791/) z lwn.net (2016)
 
