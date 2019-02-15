@@ -225,15 +225,212 @@ hledání souborů podle data jsem si to musel přes man stránky dohledávat, 
 Jestli někdo uvažuje o přidání btime do POSIX standardu nevím, nepodařilo se mi
 o tom nic dohledat. Řekl bych, že to dnes asi už nikomu nestojí za námahu.
 
-## Linuxové souborové systémy
+## Podpora btime v Linuxových souborových systémech
 
-ext3 ne, zatímco ext4 už ano
-nové btrfs ano
-xfs původně ne (např. RHEL 7)
+Podobně jako jiná unixová jádra, Linux dlouhou dobu btime nepodporoval.
+Souborový systém ext3 nebo reiserfs btime neukládá a syscall
+[`stat(2)`](http://man7.org/linux/man-pages/man2/stat.2.html) vrací
+strukturu stejného jména taktéž bez této časové značky.
+[O podpoře btime v Linuxu se sice mluví už nějaký
+čas](https://www.redhat.com/archives/ext3-users/2006-October/msg00015.html),
+ale na rozdíl od FreeBSD nešlo prostě přidat novou časovou značku někam do
+volného padding místa stávající struktury `stat`, protože Linux tam takové
+místo nemá. Místo definice nové verze struktury `stat` obsahující btime se
+ukázalo schůdnější [přidat btime do zcela nového volání `xstat()`, jehož
+začlenění do jádra se bohužel na nějakou dobu
+zadrhlo](https://lwn.net/Articles/397442/).
 
-## GNU Linux distribuce
+Linuxoví vývojáři nicméně začali přidávat podporu pro btime do
+nových souborových systémů dávno před tím, než bylo jasné, jak se to nakonec
+vyřeší.
+Např. [ext4 dostal podporu pro btime již v roce 2007 v rámci patche přidávající
+podporu pro nanosekundové časové značky](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ef7f38359ea8b3e9c7f2cae9a4d4935f55ca9e80)
+(diskový formát ext4 je stabilní od [kernelu
+2.6.28](https://kernelnewbies.org/Linux_2_6_28) z prosince 2008).
+[Btrfs v roce 2012](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9cc97d646216b6f2473fa4ab9f103514b86c6814),
+přičemž jeho disk. formát je stabilní [zhruba od listopadu 2013](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4204617d142c0887e45fda2562cb5c58097b918e).
+Do XFS, které původně btime neimplementovalo, se [tato podpora přidala v rámci
+změny přidávající kontrolní součty metadat v roce 2013](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=93848a999cf9b9e4f4f77dba843a48c393f33c59)
+a je tak dostupná od [jádra 3.10](https://kernelnewbies.org/Linux_3.10#XFS_metadata_checksums).
+To znamená, že i na relativně staré distribuci souborový systém dost možná
+ukládá pro každý soubor btime, i když tato informace není pro uživatele přímo
+přístupná. Bez podpory v kernelu se k ní lze většinou dostat přes debugging
+nástroje, které jsou ale pro každý souborový systém jiné, a které pochopitelně
+vyžadují root oprávnění pro přímý přístup k blokovému zařízení se souborovým
+systémem.
 
-TODO: timeline
+### Jak na čtení btime za použití debug nástrojů
+
+Nejdříve si (pro účely tohoto blogu) vytvoříme nové oddíly na hraní:
+
+~~~ {.kod}
+# mkfs.ext4 /dev/vdc
+# mount /dev/vdc /mnt/test_ext4
+# echo "ext4" > /mnt/test_ext4/testfile
+~~~
+
+~~~ {.kod}
+# mkfs.xfs /dev/vdd
+# mount /dev/vdd /mnt/test_xfs
+# echo "xfs" > /mnt/test_xfs/testfile
+~~~
+
+Jen pro úplnost: použil systém s Debianem Stretch (aktuální stable),
+aby byla ukázka blíže realitě. Stretch totiž obsahuje kernel, který už má btime
+podporu pro ext4 i XFS, ale ještě neumí btime předat do userspace.
+Postup popsaný níže sice bude fungovat i na novějších distribucích, ale v
+momentě, kdy máme možnost použít syscall, nemá smysl se s tím takto párat.
+Jinak zahrnul bych sem i btrfs, ale nepodařilo se mi zjistit, jak z něj btime
+dostat.
+
+V případě ext4 použijeme
+[`debugfs`](http://man7.org/linux/man-pages/man8/debugfs.8.html) a jeho příkaz
+`stat`, v jehož výstupu najdeme čas vzniku souboru jako `crtime`:
+
+~~~ {.kod}
+# TZ=CET debugfs -R 'stat testfile' /dev/vdc
+debugfs 1.43.4 (31-Jan-2017)
+Inode: 12   Type: regular    Mode:  0644   Flags: 0x80000
+Generation: 1318526178    Version: 0x00000000:00000001
+User:     0   Group:     0   Project:     0   Size: 5
+File ACL: 0    Directory ACL: 0
+Links: 1   Blockcount: 8
+Fragment:  Address: 0    Number: 0    Size: 0
+ ctime: 0x5c66c5ee:2060896c -- Fri Feb 15 15:00:14 2019
+ atime: 0x5c66c600:ee5ed49c -- Fri Feb 15 15:00:32 2019
+ mtime: 0x5c66c5ee:2060896c -- Fri Feb 15 15:00:14 2019
+crtime: 0x5c66c5ee:2060896c -- Fri Feb 15 15:00:14 2019
+Size of extra inode fields: 32
+Inode checksum: 0x0721e8ea
+EXTENTS:
+(0):32897
+~~~
+
+Pro soubor na XFS oddílu obdobně použijeme `xfs_db`. Nejdřív si však musíme
+zjistit inode souboru co nás zajímá a pak odpojit (nebo připojit read only)
+xfs filesystém. Čas vzniku souboru najdeme ve výpisu jako `v3.crtime.sec` a
+``v3.crtime.nsec``:
+
+~~~ {.kod}
+# ls -i /mnt/test_xfs/testfile
+99 /mnt/test_xfs/testfile
+# umount /mnt/test_xfs
+# TZ=CET xfs_db /dev/vdd
+xfs_db> inode 99
+xfs_db> print
+core.magic = 0x494e
+core.mode = 0100644
+core.version = 3
+core.format = 2 (extents)
+core.nlinkv2 = 1
+core.onlink = 0
+core.projid_lo = 0
+core.projid_hi = 0
+core.uid = 0
+core.gid = 0
+core.flushiter = 0
+core.atime.sec = Fri Feb 15 16:11:36 2019
+core.atime.nsec = 155502016
+core.mtime.sec = Fri Feb 15 16:11:36 2019
+core.mtime.nsec = 155502016
+core.ctime.sec = Fri Feb 15 16:11:36 2019
+core.ctime.nsec = 155502016
+core.size = 0
+core.nblocks = 0
+core.extsize = 0
+core.nextents = 0
+core.naextents = 0
+core.forkoff = 0
+core.aformat = 2 (extents)
+core.dmevmask = 0
+core.dmstate = 0
+core.newrtbm = 0
+core.prealloc = 0
+core.realtime = 0
+core.immutable = 0
+core.append = 0
+core.sync = 0
+core.noatime = 0
+core.nodump = 0
+core.rtinherit = 0
+core.projinherit = 0
+core.nosymlinks = 0
+core.extsz = 0
+core.extszinherit = 0
+core.nodefrag = 0
+core.filestream = 0
+core.gen = 559694043
+next_unlinked = null
+v3.crc = 0x40d2f493 (correct)
+v3.change_count = 3
+v3.lsn = 0x100000002
+v3.flags2 = 0
+v3.cowextsize = 0
+v3.crtime.sec = Fri Feb 15 16:11:36 2019
+v3.crtime.nsec = 155502016
+v3.inumber = 99
+v3.uuid = 425730b5-1254-45db-8e31-87f25c75f6cd
+v3.reflink = 0
+v3.cowextsz = 0
+u3 = (empty)
+~~~
+
+Pozor na to, že příkaz `stat -v` z `xfs_io` btime neukáže:
+
+~~~ {.kod}
+# mount /dev/vdd /mnt/test_xfs
+# TZ=CET xfs_io -r /mnt/test_xfs/testfile -c 'stat -v'
+fd.path = "/mnt/test_xfs/testfile"
+fd.flags = non-sync,non-direct,read-only
+stat.ino = 99
+stat.type = regular file
+stat.size = 0
+stat.blocks = 0
+stat.atime = Fri Feb 15 16:11:36 2019
+stat.mtime = Fri Feb 15 16:11:36 2019
+stat.ctime = Fri Feb 15 16:11:36 2019
+fsxattr.xflags = 0x0 []
+fsxattr.projid = 0
+fsxattr.extsize = 0
+fsxattr.cowextsize = 0
+fsxattr.nextents = 0
+fsxattr.naextents = 0
+dioattr.mem = 0x200
+dioattr.miniosz = 512
+dioattr.maxiosz = 2147483136
+~~~
+
+Další potenciální zádrhel u XFS je, že [podporu pro btime v XFS nenajdete
+na RHELu 7](https://blog.fpmurphy.com/2014/06/rhel7-xfs-is-a-step-backwards-forensically.html),
+protože jak jsme si řekli před chvílí, XFS umí ukládat btime až od jádra 3.10.
+
+### Čteme btime z Linuxového ext4 na FreeBSD
+
+Vtipné je, že pokud připojíte Linuxem vytvořený ext4 filesystém na
+FreeBSD, tak pomocí nativního `stat` příkazu btime pro soubory
+uložené na tomto Linuxovém oddílu přečtete. A to navzdory tomu, že podpora
+Linuxových souborových systémů je na FreeBSD pochopitelně omezená, a např. to
+ext4 lze přes
+[`ext2fs`](https://www.freebsd.org/cgi/man.cgi?query=ext2fs&apropos=0&sektion=5&manpath=FreeBSD+12.0-RELEASE+and+Ports&arch=default&format=html)
+připojit jen pro čtení (případně přes FUSE i pro zápis, ale to jsem nezkoušel).
+
+Takto to dopadne, když se na FreeBSD 12 pokusíme přečíst btime na ext4 oddílu z
+předchozího pokusu. Pořadí časových značek ve výstupu je `st_atime`,
+`st_mtime`, `st_ctime` a `st_birthtime`:
+
+~~~ {.kod}
+# mount -t ext2fs -o ro /dev/vtbd1 /mnt/test_ext4
+# cat /mnt/test_ext4/testfile
+ext4
+# env TZ=CET stat /mnt/test_ext4/testfile
+92 12 -rw-r--r-- 1 root wheel 127754 5 "Feb 15 15:00:32 2019" "Feb 15 15:00:14
+2019" "Feb 15 15:00:14 2019" "Feb 15 15:00:14 2019" 4096 8 0
+/mnt/test_ext4/testfile
+~~~
+
+## Podpora btime v GNU Linux distribucích
+
+TODO: timeline (jádro, glibc, gnulib, gnu coreutils, ...)
 
 ~~~ {.kod .c include="btime.c"}
 ~~~
@@ -257,11 +454,13 @@ Přehledové články k tématu:
 * Heslo [Comparison of file
   systems](https://en.wikipedia.org/wiki/Comparison_of_file_systems) z anglické
   wikipedie,
+* [RHEL7 XFS Is A Step Backwards Forensically](https://blog.fpmurphy.com/2014/06/rhel7-xfs-is-a-step-backwards-forensically.html): popisuje jak z XFS a ext4 dostat btime pomocí debug nástrojů
+* [How to find creation date of file?](https://unix.stackexchange.com/questions/91197/how-to-find-creation-date-of-file)
 
 Historické zdroje:
 
 * [Unix History Repository](https://github.com/dspinellis/unix-history-repo)
 * [Enhancements to the Fast Filesystem To Support Multi-Terabyte Storage
-  Systems](https://www.usenix.org/legacy/events/bsdcon03/tech/full_papers/mckusick/mckusick_html/)
+  Systems](https://www.usenix.org/legacy/events/bsdcon03/tech/full_papers/mckusick/mckusick_html/):
   paper o designu UFS2 filesystému, mj. obsahuje popis jak je tu birth time
   implementovaný
