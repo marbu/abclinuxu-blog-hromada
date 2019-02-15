@@ -13,9 +13,14 @@ Zarazilo vás někdy, že příkaz
 Coreutils](https://www.gnu.org/software/coreutils/) na Linuxu vypisuje kromě
 klasické trojice unixových časových značek *access*, *modify* a *change* navíc
 také jakési *birth*, u kterého ale hodnota chybí?
-Co tu vůbec to prázdné *birth* dělá? A máme to celé číst tak, že Linux čas
-vzniku souboru podporuje, ale ne u každého souborového systému?
-<!-- TODO: dopsat shrnutí o čem to je -->
+Co tu vůbec to prázdné *birth* dělá?
+Zajímat o tuto málo známou časovou značku jsem se začal až před pár měsíci při
+debugování jednoho problému, kdy jsem se snažil chytil čeho se dalo. A i když
+mi to nakonec přímo nepomohlo, postupně jsem se začal nořit do její historie a
+budoucnosti, takže tento zápisek je někde na pomezí softwarové archeologie a
+jaderných novinek, a mj. se v něm dozvíte, kde se tato časová značka vzala,
+jak s ní dnes na GNU Linuxových distribucích pracovat a jak to s ní vypadá
+do budoucna.
 
 <!--break-->
 
