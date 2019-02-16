@@ -199,19 +199,20 @@ V této podobě pak časové značky ze struktury stat vydržely až do POSIX
 standardu a dnešních dní (tedy až na ten výše zmiňovaný detail s milisekundovou
 přesností).
 
-Časová značka pro *creation time*, neboli *birth time* (btime), se
-poprvé objevila až v roce 2003 ve [FreeBSD
-5.0](https://www.freebsd.org/releases/5.0R/announce.html)
+Kdy se poprvé objevila časová značka pro *creation time*, neboli *birth time*
+(btime), je těžké s jistotou říct, protože je možné, že to bylo v rámci
+nějakého proprietárního Unixového systému. A vzhledem k tomu, že takové systémy
+jsou v dnešní době většinou mrtvé bez dostupné dokumentace nebo zdrojového kódu
+pod rozumnou licencí, se mi ani nechce něco takového dohledávat.
+V rámci unixových systémů s otevřeným zdrojovým kódem je ale toto prvenství
+jasné: časová značka pro *creation time* se poprvé objevila až v roce 2003 ve
+[FreeBSD 5.0](https://www.freebsd.org/releases/5.0R/announce.html)
 s příchodem souborového systému
 [UFS2](https://www.usenix.org/legacy/events/bsdcon03/tech/full_papers/mckusick/mckusick_html/),
 a odtud se postupně rozšířila do ostatních BSD systémů, jako jsou
 [NetBSD](http://cvsweb.netbsd.org/bsdweb.cgi/src/sys/sys/stat.h?rev=1.42&content-type=text/x-cvsweb-markup&only_with_tag=MAIN)
 nebo
 [OpenBSD](https://github.com/openbsd/src/commit/cc2fc615c6e2dee87e5a3cd5a655a2ee5ef778c8).
-Je možné, že podobné rozšíření implementoval i jiný proprietární Unixový systém
-o něco dřív a trochu jinak, ale těžko se to dá ověřit, když takové systémy jsou
-v dnešní době mrtvé bez dostupné dokumentace nebo zdrojového kódu pod rozumnou
-licencí (k Solarisu se ještě později vrátím).
 
 Za povšimnutí stojí, jak podporu pro *birth time* ve FreeBSD přidali. Díky
 tomu, že FreeBSD mělo ve struktuře stat nevyužité místo, nebylo [přidání
@@ -221,6 +222,14 @@ problém z hlediska zpětné kompatibility. [Aktuálně se tato časová značk
 jmenuje `st_birthtim`](https://www.freebsd.org/cgi/man.cgi?query=stat&apropos=0&sektion=2&manpath=FreeBSD+13-current&arch=default&format=html),
 aby její pojmenování a význam odpovídalo konvenci z normy POSIX
 (viz tabulka výše).
+
+[OpenSolaris](https://en.wikipedia.org/wiki/OpenSolaris) čas vzniku souboru
+sice také podporuje, ale strukturu `stat` ponechal beze změn. Pro získání
+hodnoty btime je tak třeba použít volání
+[fgetattr(3C)](https://www.unix.com/man-page/opensolaris/3C/fsetattr/) a ze
+seznamu vrácených attributů přečíst `A_CRTIME`. Tato podpora je zdá se
+přítomna už v prvním commitu projektu OpenSolaris z roku 2005, takže
+pravděpodobně pochází ze Solarisu.
 
 <!-- hint
 Btw docela dlouho se mi pletlo, jaký je rozdíl mezi mtime a ctime a např. při
@@ -622,7 +631,7 @@ TODO: example
 
 ## Reference
 
-Přehledové články k tématu:
+Články k tématu:
 
 * [File creation times](https://lwn.net/Articles/397442/) z lwn.net (2010),
   česky v jaderných novinkách jako [Časy vytvoření
@@ -634,6 +643,9 @@ Přehledové články k tématu:
   wikipedie,
 * [How to find creation date of file?](https://unix.stackexchange.com/questions/91197/how-to-find-creation-date-of-file)
 * [task_diag and statx()](https://lwn.net/Articles/685791/) z lwn.net (2016)
+* [Forensic Timestamp Analysis of
+  ZFS](http://www.bsdcan.org/2014/schedule/track/Security/464.en.html),
+  BSDCan 2014
 
 Historické zdroje:
 
@@ -642,3 +654,4 @@ Historické zdroje:
   Systems](https://www.usenix.org/legacy/events/bsdcon03/tech/full_papers/mckusick/mckusick_html/):
   paper o designu UFS2 filesystému, mj. obsahuje popis jak je tu birth time
   implementovaný
+* [OpenSolaris project repository](https://repo.or.cz/opensolaris.git)
