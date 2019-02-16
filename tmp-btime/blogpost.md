@@ -441,7 +441,7 @@ userspace. Jak už jsem zmínil výše, [btime mělo být možné získat pomoc�
 `xstat()`, jehož začlenění se zadrhlo](https://lwn.net/Articles/397442/), aby
 se [po několika letech vynořilo v nové podobě jako
 `statx()`](https://lwn.net/Articles/685791/), které se nakonec do jádra
-dostalo a je tak dostupné od
+dostalo v
 [Linuxu 4.11](https://kernelnewbies.org/Linux_4.11#statx.282.29.2C_a_modern_stat.282.29_alternative)
 z dubna 2017.
 [Podpora v glibc](https://sourceware.org/bugzilla/show_bug.cgi?id=21297)
@@ -451,8 +451,8 @@ ze srpna 2018. To znamená, že např. na Fedoře 29 se to dá už vyzkoušet.
 
 Následující kód ukazuje, jak pomocí
 [`statx(2)`](http://man7.org/linux/man-pages/man2/statx.2.html) přečíst pro
-daný soubor právě pouze btime. To že je možné jádru říct o která metadata máme
-zájem, díky čemuž se jádro nemusí namáhat se zjišťováním hodnot které stejně
+daný soubor právě pouze btime. To, že je možné jádru říct o která metadata máme
+zájem, díky čemuž se jádro nemusí namáhat se zjišťováním hodnot, které stejně
 nepoužijeme, je mimochodem jedna z hlavních výhod volání `statx(2)` oproti
 `stat(2)`.
 
@@ -483,18 +483,33 @@ $ ./btime /mnt/test_ext4/testfile | date -f- --rfc-3339=ns
 ~~~
 
 Bohužel, tímto podpora btime v základních komponentách GNU Linux distribucí
-zatím končí. Stat z GNU Coreutils stále vypisuje btime jako "-" ani žádný jiný
-základní nástroj jako např. `ls` nebo `tar` s btime přes `statx(2)` na Linuxu
-pracovat neumí.
+zatím končí. Stat z GNU Coreutils stále vypisuje btime jako "-" a ani žádný
+jiný základní nástroj jako např. `ls`, `find` nebo `tar` s btime přes
+`statx(2)` na Linuxu pracovat neumí.
 
-Díval jsem se na zdroják stat z coreutils, a ukázalo se, že díky hacku
-řešící podporu btime pro Solaris není až tak těžké tam btime s pomocí
-`statx(2)` dotat:
+Nabízí se ale otázka, proč `stat(1)` ten btime vůbec vypisuje, když tu až do
+nedávné doby nebyla možnost, jak tuto informaci na Linuxu získat. Bližší pohled
+však ukáže, že v knihovně [gnulib](https://www.gnu.org/software/gnulib/),
+kterou stat používá, byla [podpora pro čtení btime ze struktury stat díky BSD*
+systémům implementována již v roce
+2007](http://git.savannah.gnu.org/cgit/gnulib.git/commit/?id=735c00a2f3a5ce7aaec8517f5438ce37b48a936c).
+A samotný [kód pro zobrazování btime se do `stat(1)` přidal už v roce
+2010](https://git.savannah.gnu.org/cgit/coreutils.git/commit/?id=abe5c1f9bc09753fd79e7a121c8ecfa917dfaddb),
+hádám že v souvislosti s prvním návrhem systémového volání `xstat(2)`, které
+se ale do jádra tehdy nakonec nedostalo. Každopádně díky tomu `stat(1)` od
+[GNU Coreutils 8.6 z roku
+2010](https://savannah.gnu.org/forum/forum.php?forum_id=6553) na Linuxu
+vypisuje btime s hodnotou "-" (a to bez ohledu na to, co je to za souborový
+systém), zatímco třeba na BSD systémech nebo
+Solarisu je schopný tyto hodnoty i zobrazovat, pokud je filesystém podporuje.
+
+Další pohled na zdrojový kód odhalí, že díky hacku řešící podporu btime pro
+Solaris není až tak těžké tam btime s pomocí `statx(2)` volání dotat:
 
 ~~~ {.kod .diff include="linux-btime-hack.patch"}
 ~~~
 
-Podstata tohoto patche je v tom, že se volá klasický `stat(2)` jako předtím a
+Podstata tohoto hacku je v tom, že se volá klasický `stat(2)` jako předtím a
 pak si navíc přes `statx(2)` ještě řekneme o btime. Na hraní to stačí:
 
 ~~~ {.kod}
@@ -523,8 +538,9 @@ Change: 2019-02-15 19:52:46.598671520 +0100
 Tohle "řešení" ale není zcela vhodné na začlenění do coreutils, protože používá
 zbytečně 2 volání jádra místo jednoho, a celé je to navíc postavená nad jiným
 hackem. K tomu abych stat upravil nějak rozumně jsem se ale zatím nedostal, a
-podle toho, že na coreutils listu mi nikdo neodpověděl, bych řekl, že na
-tom aktuálně nikdo nedělá.
+podle toho, že [na coreutils listu mi nikdo
+neodpověděl](https://lists.gnu.org/archive/html/coreutils/2018-12/msg00016.html),
+bych řekl, že na tom aktuálně nikdo nedělá.
 
 ## Co to btime vlastně znamená a k čemu je dobré?
 
