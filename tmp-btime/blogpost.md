@@ -480,6 +480,8 @@ $ ./btime /mnt/test_ext4/testfile | date -f- --rfc-3339=ns
 2019-02-15 15:00:14.135799387+01:00
 ~~~
 
+### Stat z GNU Coreutils
+
 Bohužel, tímto podpora btime v základních komponentách GNU Linux distribucí
 zatím končí. Stat z GNU Coreutils stále vypisuje btime jako "-" a ani žádný
 jiný základní nástroj jako např. `ls`, `find` nebo `tar` s btime přes
@@ -539,6 +541,78 @@ hackem. K tomu abych stat upravil nějak rozumně jsem se ale zatím nedostal, a
 podle toho, že [na coreutils listu mi nikdo
 neodpověděl](https://lists.gnu.org/archive/html/coreutils/2018-12/msg00016.html),
 bych řekl, že na tom aktuálně nikdo nedělá.
+
+### GNU Bash
+
+Trochu jsem se zhrozil, když jsem četl [release notes pro Bash
+5.0](https://lists.gnu.org/archive/html/bash-announce/2019-01/msg00000.html)
+z ledna 2019, kde mezi novinkami je:
+
+> d. New loadable builtins: rm, stat, fdflags.
+
+Na první pohled by to mohlo vypadat, že než se podaří do stat z coreutils
+přidat podporu pro btime, bude potřeba tuto práci udělat ještě jednou, protože
+s příchodem bashe 5 budou všichni používat stat implementovaný přímo v shellu,
+podobně jako např. v případě `time`:
+
+~~~ {.kod}
+$ type -a time
+time is a shell keyword
+time is /usr/bin/time
+time is /bin/time
+~~~
+
+Ale ukázalo se, že to není tak horké, protože příslušný zdrojový kód
+[`stat.c`](http://git.savannah.gnu.org/cgit/bash.git/tree/examples/loadables/stat.c)
+se nachází v adresáři
+[`examples/loadables/`](http://git.savannah.gnu.org/cgit/bash.git/tree/examples/loadables),
+tj. jde o tzv. [*dynamic loadable
+buildin*](http://www.drdobbs.com/shell-corner-bash-dynamically-loadable-b/199102950),
+a vnitřní funkce umístěné zde, např. `cat.c` nebo `sleep.c`, nejsou běžně v
+binárních balíčcích vůbec přítomné (jak si můžete ověřit pomocí výpisu `enable
+-a`). Idea za tímto je taková, že pokud potřebujete zoptimalizovat shell
+skript kde např. voláte ve smyčce sleep, [můžete si zkompilovat příslušný
+buildin (případně si napsat vlastní) a pomocí `enable -f` ho do bashe
+načíst](https://bbs.archlinux.org/viewtopic.php?pid=1366887#p1366887).
+Osobně mi sice přijde rozumnější psát takový script třeba v pythonu, ale pokud
+se není možné bashi vyhnout (např. protože jde o nějaký velký legacy skript),
+ta možnost tu je.
+
+A jak už jsem naznačil, implementace loadable buildin funkce `stat` v bashi s
+btime pracovat neumí:
+
+~~~ { .kod}
+$ enable -f ~/projects/bash/examples/loadables/stat stat
+$ help stat
+stat: stat [-lL] [-A aname] file
+    Load an associative array with file status information.
+
+    Take a filename and load the status information returned by a
+    stat(2) call on that file into the associative array specified
+    by the -A option.  The default array name is STAT.  If the -L
+    option is supplied, stat does not resolve symbolic links and
+    reports information about the link itself.  The -l option results
+    in longer-form listings for some of the fields. The exit status is 0
+    unless the stat fails or assigning the array is unsuccessful.
+$ stat ~/tmp/test
+$ for i in "${!STAT[@]}"; do echo $i = ${STAT[$i]}; done
+nlink = 1
+link = /home/martin/tmp/test
+perms = 0664
+inode = 7377267
+blksize = 4096
+device = 64775
+atime = 1550256766
+type = -
+blocks = 0
+uid = 1000
+size = 0
+rdev = 0
+name = /home/martin/tmp/test
+mtime = 1550256766
+ctime = 1550256766
+gid = 1000
+~~~
 
 ## Co to btime vlastně znamená a k čemu je dobré?
 
