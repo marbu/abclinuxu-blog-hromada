@@ -199,6 +199,16 @@ V této podobě pak časové značky ze struktury stat vydržely až do POSIX
 standardu a dnešních dní (tedy až na ten výše zmiňovaný detail s milisekundovou
 přesností).
 
+&lt;hint&gt;
+Nějakou dobu se mi pletlo, jaký je rozdíl mezi mtime (modify) a ctime (change)
+a např. při hledání souborů podle data jsem si to musel čas od času dohledávat.
+Na základě informací z předchozího textu se ale nabízí pomůcka pro zapamatování
+rozdílu: ctime je timestamp, co se lidem občas plete s *creation time* a co
+nějakou dobu v Unixu vůbec nebyl, takže je z těch dvou to bude ten méně
+významný, tedy ten co popisuje změnu metadat/inode (což je něco, co mě většinou
+nezajímá).
+&lt;/hint&gt;
+
 Kdy se poprvé objevila časová značka pro *creation time*, neboli *birth time*
 (btime), je těžké s jistotou říct, protože je možné, že to bylo v rámci
 nějakého proprietárního Unixového systému. A vzhledem k tomu, že takové systémy
@@ -230,11 +240,6 @@ hodnoty btime je tak třeba použít volání
 seznamu vrácených attributů přečíst `A_CRTIME`. Tato podpora je zdá se
 přítomna už v prvním commitu projektu OpenSolaris z roku 2005, takže
 pravděpodobně pochází ze Solarisu.
-
-<!-- hint
-Btw docela dlouho se mi pletlo, jaký je rozdíl mezi mtime a ctime a např. při
-hledání souborů podle data jsem si to musel přes man stránky dohledávat, ale .
--->
 
 Jestli někdo uvažuje o přidání btime do POSIX standardu nevím, nepodařilo se mi
 o tom nic dohledat. Řekl bych, že to dnes asi už nikomu nestojí za námahu.
