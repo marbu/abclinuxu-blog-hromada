@@ -9,7 +9,7 @@ links-as-notes: false
 ...
 
 Zarazilo vás někdy, že příkaz
-[`stat`](http://man7.org/linux/man-pages/man1/stat.1.html) z [GNU
+[`stat(1)`](http://man7.org/linux/man-pages/man1/stat.1.html) z [GNU
 Coreutils](https://www.gnu.org/software/coreutils/) na Linuxu vypisuje kromě
 klasické trojice unixových časových značek *access*, *modify* a *change* navíc
 také jakési *birth*, u kterého ale hodnota chybí?
@@ -220,7 +220,7 @@ struktury](https://github.com/dspinellis/unix-history-repo/blob/FreeBSD-release/
 problém z hlediska zpětné kompatibility. [Aktuálně se tato časová značka ale
 jmenuje `st_birthtim`](https://www.freebsd.org/cgi/man.cgi?query=stat&apropos=0&sektion=2&manpath=FreeBSD+13-current&arch=default&format=html),
 aby její pojmenování a význam odpovídalo konvenci z normy POSIX
-2008 (viz tabulka výše).
+(viz tabulka výše).
 
 <!-- hint
 Btw docela dlouho se mi pletlo, jaký je rozdíl mezi mtime a ctime a např. při
@@ -240,9 +240,9 @@ strukturu stejného jména taktéž bez této časové značky.
 čas](https://www.redhat.com/archives/ext3-users/2006-October/msg00015.html),
 ale na rozdíl od FreeBSD nešlo prostě přidat novou časovou značku někam do
 volného padding místa stávající struktury `stat`, protože Linux tam takové
-místo nemá. Místo definice nové verze struktury `stat` obsahující btime se
-ukázalo schůdnější [přidat btime do zcela nového volání `xstat()`, jehož
-začlenění do jádra se bohužel na nějakou dobu
+místo nemá. Místo definice nové verze struktury `stat` se tak
+ukázalo schůdnější navrhnout [přidání btime do zcela nového volání `xstat()`,
+jehož začlenění do jádra se bohužel na nějakou dobu
 zadrhlo](https://lwn.net/Articles/397442/).
 
 Linuxoví vývojáři nicméně začali přidávat podporu pro btime do
@@ -420,17 +420,15 @@ ext4 lze přes
 připojit jen pro čtení (případně přes FUSE i pro zápis, ale to jsem nezkoušel).
 
 Takto to dopadne, když se na FreeBSD 12 pokusíme přečíst btime na ext4 oddílu z
-předchozího pokusu. Pořadí časových značek ve výstupu je `st_atime`,
-`st_mtime`, `st_ctime` a `st_birthtime`:
+předchozího pokusu. Pořadí časových značek ve výstupu je atime, mtime, ctime a
+btime:
 
 ~~~ {.kod}
 # mount -t ext2fs -o ro /dev/vtbd1 /mnt/test_ext4
 # cat /mnt/test_ext4/testfile
 ext4
 # env TZ=CET stat /mnt/test_ext4/testfile
-92 12 -rw-r--r-- 1 root wheel 127754 5 "Feb 15 15:00:32 2019" "Feb 15 15:00:14
-2019" "Feb 15 15:00:14 2019" "Feb 15 15:00:14 2019" 4096 8 0
-/mnt/test_ext4/testfile
+92 12 -rw-r--r-- 1 root wheel 127754 5 "Feb 15 15:00:32 2019" "Feb 15 15:00:14 2019" "Feb 15 15:00:14 2019" "Feb 15 15:00:14 2019" 4096 8 0 /mnt/test_ext4/testfile
 ~~~
 
 ## Podpora btime v GNU Linux distribucích
@@ -459,7 +457,7 @@ nepoužijeme, je mimochodem jedna z hlavních výhod volání `statx(2)` oproti
 ~~~ {.kod .c include="btime.c"}
 ~~~
 
-Pokud máte na své distribuce glibc starší než 2.28 ale přitom jádro máte
+Pokud máte na své distribuci glibc starší než 2.28 ale přitom jádro máte
 alespoň 4.11, musíte zavolat `statx(2)` s pomocí `syscall(2)`.
 
 Program vypisuje pouze samotnou časovou značku v unixovém formátu, zavináč na
