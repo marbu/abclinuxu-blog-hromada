@@ -10,4 +10,4 @@ blogpost.pdf: blogpost.md
 	pandoc -s -f markdown -t latex $(PANDOCFLAGS) $? -o $@
 
 clean:
-	rm -f blogpost.html blogpost.pdf preview.html
+	rm -f blogpost.html blogpost.pdf preview.html btime
