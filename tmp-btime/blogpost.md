@@ -1,5 +1,5 @@
 ---
-title: Jak je to s podporou času vzniku souboru na GNU Linux distribucích
+title: Jak je to s časem vzniku souboru na GNU Linux distribucích
 author: marbu
 lang: cs-CZ
 rights: cc by-sa 4.0
