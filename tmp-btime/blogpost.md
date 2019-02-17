@@ -624,6 +624,10 @@ ctime = 1550256766
 gid = 1000
 ~~~
 
+Ale v tomto případě mi přijde, že místo přidání podpory pro btime do této
+`stat` buildin funkce by bylo lepší napsat jinou, která by mohla lépe využívat
+možností jaderného volání `statx(2)`.
+
 ### Ostatní nástroje
 
 Bohužel, podpora btime v základních komponentách GNU Linux distribucí zatím
@@ -635,23 +639,91 @@ hodnotu zatím přečíst. Na druhou stranu, díky tomu že btime je možné č�
 pomocí nového volání jádra `statx(2)`, nebudou často změny v těchto nástrojích
 tak přímočaré, jak by se mohlo na první pohled zdát.
 
-Dále také bude záležet na tom, zda se udrží současný stav a btime stále nebude
-možné nijak z userspace nastavit (že jsem se o systémovém volání pro změnu
-btime u souboru nezmiňoval není náhoda). Nemožnost libovolně nastavit btime
-má svou logiku, čas vzniku souboru, pokud má opravdu dostát svému významu, by
-měl zůstat po zbytek života souboru stejný, ale na druhé straně to
-také znamená, že není možné např. archivovat soubor včetně btime pomocí `cp
--a` nebo ho obnovit ze zálohy pomocí `rsync`.
+Dále také bude záležet na tom, zda se později neobjeví podpora pro změnu btime
+v jaderných voláních jako
+[`utimes(2)`](http://man7.org/linux/man-pages/man2/utimes.2.html) nebo
+[`utimensat(2)`](http://man7.org/linux/man-pages/man2/utimensat.2.html).
+Aktuální stav, kdy není možné libovolně nastavit btime má svou logiku, čas
+vzniku souboru, pokud má opravdu dostát svému významu, by měl zůstat po zbytek
+života souboru stejný, ale na druhé straně to také znamená, že není možné např.
+archivovat soubor včetně btime pomocí `cp -a` nebo ho obnovit ze zálohy pomocí
+`rsync`. Z tohoto důvodu bude asi implementace podpory btime v GNU tar trvat
+trochu déle, protože není jasné, proč by tam někdo přidával podporu pro btime,
+když by pak tato informace nešla na Linuxu obnovit při rozbalování archivu.
 
-A pak existují nástroje, kterým bude implementace podpory btime trvat mnohem
-déle (jestli vůbec) vzhledem ke komplikacím, co by to přineslo. Sem bych asi
-řadil GNU tar, který částečně patří i do předchozí skupiny.
+Tady se hodí poznamenat, že FreeBSD možnost měnit btime pomocí
+[`utimes(2)`](https://www.freebsd.org/cgi/man.cgi?query=utimes&apropos=0&sektion=2&manpath=FreeBSD+12.0-RELEASE&arch=default&format=html)
+nabízí od začátku, jak je popsané v
+[článku o UFS2](https://www.usenix.org/legacy/events/bsdcon03/tech/full_papers/mckusick/mckusick_html/).
 
-## Co to btime vlastně znamená a k čemu je dobré?
+## Co btime vlastně znamená a k čemu je to dobré?
 
-TODO: kompatibilita a windows, samba, ntfs
+Co vlastně znamená čas vzniku souboru? Jeden by řekl, že je to jasné, ale tak
+jednoduché to úplně není. Nejen vzhledem k výše zmíněné nemožnosti btime
+nastavit jde o low level informaci, o kterou např. při kopírování souboru
+přijdeme (z pohledu fs jde o nový soubor). Jiný častý případ kdy btime ztratíme
+je, když [aplikace zapisuje do souboru atomicky s pomocí přejmenování dočasného
+souboru](https://unix.stackexchange.com/a/45812/58336).
 
-TODO: example
+Btw nikdy předtím jsem si neuvědomil, že tohle atomické zapisování dělá např.
+i vim (všiměte si změny v inode a času vzniku souboru):
+
+~~~ { .kod }
+$ rm ~/tmp/test
+$ touch ~/tmp/test
+$ stat.hacked ~/tmp/test
+  File: /home/martin/tmp/test
+  Size: 0         	Blocks: 0          IO Block: 4096   regular empty file
+Device: fd07h/64775d	Inode: 7377286     Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/  martin)   Gid: ( 1000/  martin)
+Access: 2019-02-17 09:51:45.483720811 +0100
+Modify: 2019-02-17 09:51:45.483720811 +0100
+Change: 2019-02-17 09:51:45.483720811 +0100
+ Birth: 2019-02-17 09:51:45.483720811 +0100
+$ vim ~/tmp/test
+$ stat.hacked ~/tmp/test
+  File: /home/martin/tmp/test
+  Size: 5         	Blocks: 8          IO Block: 4096   regular file
+Device: fd07h/64775d	Inode: 7377267     Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/  martin)   Gid: ( 1000/  martin)
+Access: 2019-02-17 09:52:17.151767057 +0100
+Modify: 2019-02-17 09:52:17.151767057 +0100
+Change: 2019-02-17 09:52:17.156767065 +0100
+ Birth: 2019-02-17 09:52:17.151767057 +0100
+~~~
+
+A tímto se konečně dostáváme k otázce k čemu je to btime vlastně dobré.
+Jak je vidět z doby, která byla potřeba aby se btime podpora dostala v
+použitelné podobě do jádra, nikdo tomu nepřipisuje velkou prioritu. To je
+vidět taky z toho, že změny implementující btime se často objevují v
+commitech, jejichž hlavní náplní je něco jiného. Ať už v případě ext4, kdy
+hlavní cíl byl implementovat nanosekundové časové značky. Podobně XFS přidává
+btime v rámci zavádění kontrolních součtů metadat a syscall `statx(2)` nebyl
+vytvořen jen kvůli čtení btime. Lecos naznačuje i to, za celou 50 letou
+historii Unixu to nikdo nenavrhl na přidání do POSIX standardu.
+
+Když se podíváme na důvody implementace btime v Linuxu, kromě stručného
+"UFS2/ZFS to má taky" často vidíme zmínky o Sambě a kompatibilitě s Windows.
+Bohužel, Samba nemůže Linuxový btime v současné podobně přímo využít, protože
+Windows umožňuje čas vzniku souboru libovolně  měnit. Také
+[NTFS-3G](https://en.wikipedia.org/wiki/NTFS-3G) by mohl teoreticky čas vzniku
+souboru z Windows reportovat na Linuxu pomocí btime. Prakticky se tím ale
+nikdo nebude zabývat dokud se podpora pro `statx(2)` nepřidá do FUSE a alespoň
+nástroje z coreutils budou umět s btime pracovat. Navíc [NTFS-3G už teď umí
+předat btime pomocí rozšířených
+atributů](https://www.tuxera.com/community/ntfs-3g-advanced/extended-attributes/#filetimes),
+i když možnost použít `ls` by byla rozhodně pohodlnější.
+
+Nová časová značka se ale každopádně dá dobře využít při debugování nějakého
+podivného chování, kdy se každá stopa navíc hodí, ať už je za ním útočník,
+malware nebo ne zcela fungující software nebo hardware. Mimo těchto
+"detektivních" případů se btime dá využít i pro opačné účely. Např.
+by [teoreticky šlo do souborových časových značek nepozorovaně ukládat malé
+množství dat](https://www.dfrws.org/sites/default/files/session-files/paper_anti-forensics_in_ext4_on_secrecy_and_usability_of_timestamp-based_data_hiding.pdf).
+Paradoxně v obou případech je ale aktuální stav, kdy je btime podpora pouze v
+kernelu, vlastně výhodný. Pro forenzní analýzu je užitečné, že je vzhledem k
+menší povědomí o btime pravděpodobnost jeho falšování nižší. A pro opačné
+případy je zase pěkné, že "zneužívání" btime není tak na očích.
 
 ## Reference
 
@@ -665,11 +737,14 @@ TODO: example
 * Heslo [Comparison of file
   systems](https://en.wikipedia.org/wiki/Comparison_of_file_systems) z anglické
   wikipedie,
-* [How to find creation date of file?](https://unix.stackexchange.com/questions/91197/how-to-find-creation-date-of-file)
-* [task_diag and statx()](https://lwn.net/Articles/685791/) z lwn.net (2016)
-* [Forensic Timestamp Analysis of
-  ZFS](http://www.bsdcan.org/2014/schedule/track/Security/464.en.html),
-  BSDCan 2014
+* Otázka [How to find creation date of file?](https://unix.stackexchange.com/questions/91197/how-to-find-creation-date-of-file)
+  z unix.stackexchange.com,
+* [task_diag and statx()](https://lwn.net/Articles/685791/) z lwn.net (2016),
+* Článek [Anti-forensics in ext4: On secrecy and usability of timestamp-baseddata
+  hiding](https://www.dfrws.org/sites/default/files/session-files/paper_anti-forensics_in_ext4_on_secrecy_and_usability_of_timestamp-based_data_hiding.pdf),
+* Článek/přednáška [Forensic Timestamp Analysis of
+  ZFS](http://www.bsdcan.org/2014/schedule/track/Security/464.en.html)
+  z konference BSDCan 2014.
 
 Historické zdroje:
 
