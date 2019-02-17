@@ -496,12 +496,8 @@ $ ./btime /mnt/test_ext4/testfile | date -f- --rfc-3339=ns
 
 ### Stat z GNU Coreutils
 
-Bohužel, tímto podpora btime v základních komponentách GNU Linux distribucí
-zatím končí. Stat z GNU Coreutils stále vypisuje btime jako "-" a ani žádný
-jiný základní nástroj jako např. `ls`, `find` nebo `tar` s btime přes
-`statx(2)` na Linuxu pracovat neumí.
-
-Nabízí se ale otázka, proč `stat(1)` ten btime vůbec vypisuje, když tu až do
+Jak jsem připomněl v úvodu, stat z GNU Coreutils stále vypisuje btime jako "-".
+Nabízí se ale otázka, proč se s tím stat vůbec obtěžuje, když tu až do
 nedávné doby nebyla možnost, jak tuto informaci na Linuxu získat. Bližší pohled
 však ukáže, že v knihovně [gnulib](https://www.gnu.org/software/gnulib/),
 kterou stat používá, byla [podpora pro čtení btime ze struktury stat díky BSD*
@@ -556,7 +552,7 @@ podle toho, že [na coreutils listu mi nikdo
 neodpověděl](https://lists.gnu.org/archive/html/coreutils/2018-12/msg00016.html),
 bych řekl, že na tom aktuálně nikdo nedělá.
 
-### GNU Bash
+### Stat z GNU Bash
 
 Trochu jsem se zhrozil, když jsem četl [release notes pro Bash
 5.0](https://lists.gnu.org/archive/html/bash-announce/2019-01/msg00000.html)
@@ -627,6 +623,29 @@ mtime = 1550256766
 ctime = 1550256766
 gid = 1000
 ~~~
+
+### Ostatní nástroje
+
+Bohužel, podpora btime v základních komponentách GNU Linux distribucí zatím
+končí u `statx(2)` wrapperu v glibc. Stejně jako výše uvedené implementace
+nástroje `stat`, žádný základní nástroj jako např. `ls` nebo `find` s
+btime na Linuxu pracovat neumí. Přitom podobně jako v případě `stat`,
+např. `find` už základní podporu pro btime má, jen na Linuxu neumí jeho
+hodnotu zatím přečíst. Na druhou stranu, díky tomu že btime je možné číst pouze
+pomocí nového volání jádra `statx(2)`, nebudou často změny v těchto nástrojích
+tak přímočaré, jak by se mohlo na první pohled zdát.
+
+Dále také bude záležet na tom, zda se udrží současný stav a btime stále nebude
+možné nijak z userspace nastavit (že jsem se o systémovém volání pro změnu
+btime u souboru nezmiňoval není náhoda). Nemožnost libovolně nastavit btime
+má svou logiku, čas vzniku souboru, pokud má opravdu dostát svému významu, by
+měl zůstat po zbytek života souboru stejný, ale na druhé straně to
+také znamená, že není možné např. archivovat soubor včetně btime pomocí `cp
+-a` nebo ho obnovit ze zálohy pomocí `rsync`.
+
+A pak existují nástroje, kterým bude implementace podpory btime trvat mnohem
+déle (jestli vůbec) vzhledem ke komplikacím, co by to přineslo. Sem bych asi
+řadil GNU tar, který částečně patří i do předchozí skupiny.
 
 ## Co to btime vlastně znamená a k čemu je dobré?
 
