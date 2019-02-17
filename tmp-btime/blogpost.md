@@ -196,7 +196,7 @@ struct	stat
 ```
 
 V této podobě pak časové značky ze struktury stat vydržely až do POSIX
-standardu a dnešních dní (tedy až na ten výše zmiňovaný detail s milisekundovou
+standardu a dnešních dní (tedy až na ten výše zmiňovaný detail s nanosekundovou
 přesností).
 
 &lt;hint&gt;
@@ -477,7 +477,7 @@ alespoň 4.11, musíte zavolat `statx(2)` s pomocí `syscall(2)`.
 Program vypisuje pouze samotnou časovou značku v unixovém formátu, zavináč na
 začátku je pro zjednodušení dekódování času pomocí nástroje `date`:
 
-~~~
+~~~ {.kod}
 $ make btime
 cc     btime.c   -o btime
 $ ./btime btime
