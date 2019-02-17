@@ -42,9 +42,44 @@ ALLOWED_TAGS = [
 
 
 ALLOWED_ATTRIBUTES = {
-    "a": ["href"],
-    "pre": ["class"],
+    "a": {"href": None}, # spec. case: None means that href can have any value
+    "pre": {"class": ["kod"]},
     }
+
+
+def abclinuxu_filter_attributes(el):
+    """
+    Dropping html attributes or filtering values of html attributes.
+    """
+    if el.tag not in ALLOWED_ATTRIBUTES:
+        msg = "dropping all attributes of tag {}: {}"
+        print(msg.format(el.tag, el.attrib), file=sys.stderr)
+        for attr in el.attrib:
+            del el.attrib[attr]
+    else:
+        for attr in el.attrib:
+            if attr not in ALLOWED_ATTRIBUTES[el.tag]:
+                msg = "dropping attribute {} of tag {}"
+                print(msg.format(attr, el.tag), file=sys.stderr)
+                del el.attrib[attr]
+            else:
+                # filtering of value of html attribute
+                if ALLOWED_ATTRIBUTES[el.tag][attr] is not None:
+                    actual_attrib = el.attrib[attr].split(" ")
+                    filtered_attrib = []
+                    for aa in actual_attrib:
+                        if aa in ALLOWED_ATTRIBUTES[el.tag][attr]:
+                            filtered_attrib.append(aa)
+                    if len(filtered_attrib) > 0:
+                        msg = "filtering value {} of attribute {} of tag {}"
+                        print(
+                            msg.format(actual_attrib, attr, el.tag),
+                            file=sys.stderr)
+                        el.attrib[attr] = " ".join(filtered_attrib)
+                    else:
+                        msg = "dropping attribute {} of tag {}"
+                        print(msg.format(attr, el.tag), file=sys.stderr)
+                        del el.attrib[attr]
 
 
 def abclinuxu_filter(tree):
@@ -54,29 +89,17 @@ def abclinuxu_filter(tree):
     """
     for el in tree.iter():
         if type(el.tag) is not str:
-            # this will skip eg. all comments
+            # this preserves all comments
             continue
         if el.tag not in ALLOWED_TAGS:
-            msg = "dropping tag {}: {}"
-            print(msg.format(el.tag, el.text), file=sys.stderr)
+            msg = "dropping tag {}: {}".format(el.tag, el.text)
+            print(msg, file=sys.stderr)
             el.drop_tag()
-            continue
-        if el.tag == "a" and "href" not in el.attrib:
+        elif el.tag == "a" and "href" not in el.attrib:
             print("dropping tag a without href", file=sys.stderr)
             el.drop_tag()
-            continue
-        if len(el.attrib) > 0:
-            if el.tag not in ALLOWED_ATTRIBUTES:
-                msg = "dropping attributes of tag {}: {}"
-                print(msg.format(el.tag, el.attrib), file=sys.stderr)
-                for attr in el.attrib:
-                    del el.attrib[attr]
-            else:
-                for attr in el.attrib:
-                    if attr not in ALLOWED_ATTRIBUTES[el.tag]:
-                        msg = "dropping attribute {} of tag {}"
-                        print(msg.format(attr, el.tag), file=sys.stderr)
-                        del el.attrib[attr]
+        elif len(el.attrib) > 0:
+            abclinuxu_filter_attributes(el)
 
 
 def main():
