@@ -1,0 +1,42 @@
+diff --git a/configure.ac b/configure.ac
+index 669e9d1f2..081728c96 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -318,6 +318,8 @@ if test $ac_cv_func_getattrat = yes; then
+   AC_SUBST([LIB_NVPAIR])
+ fi
+ 
++AC_CHECK_FUNCS([statx])
++
+ # SCO-ODT-3.0 is reported to need -los to link programs using initgroups
+ AC_CHECK_FUNCS([initgroups])
+ if test $ac_cv_func_initgroups = no; then
+diff --git a/src/stat.c b/src/stat.c
+index 0a5ef3cb4..189328cab 100644
+--- a/src/stat.c
++++ b/src/stat.c
+@@ -1007,6 +1007,24 @@ get_birthtime (int fd, char const *filename, struct stat const *st)
+     }
+ #endif
+ 
++#if HAVE_STATX
++  if (ts.tv_nsec < 0)
++    {
++      struct statx stx = { 0, };
++      if ((fd < 0
++           ? statx(AT_FDCWD, filename, AT_SYMLINK_NOFOLLOW, STATX_BTIME, &stx)
++           : statx(fd, "", AT_EMPTY_PATH, STATX_BTIME, &stx))
++          == 0)
++        {
++          if (stx.stx_btime.tv_sec != 0)
++            {
++              ts.tv_sec = stx.stx_btime.tv_sec;
++              ts.tv_nsec = stx.stx_btime.tv_nsec;
++            }
++        }
++    }
++#endif
++
+   return ts;
+ }
+ 
