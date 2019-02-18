@@ -1,3 +1,10 @@
+---
+title: git-cd
+author: marbu
+lang: cs-CZ
+rights: cc by-sa 4.0
+...
+
 Při prolézání cizího git repozitáře mě nedávno napadla jednoduchá
 myšlenka: mít tak příkaz `git-cd`, který by fungoval stejně jako `cd`,
 ale s cestami by pracoval relativně k samotnému repozitáři. A ukázalo

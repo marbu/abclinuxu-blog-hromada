@@ -1,3 +1,10 @@
+---
+title: GNU tar, xkcd a BSD
+author: marbu
+lang: cs-CZ
+rights: cc by-sa 4.0
+...
+
 Pamatujete si na xkcd komix, kde atomová bomba pro odjištění vyžaduje validní
 příklad použití taru? Ať ano či ne, v tomto blogu se o nástroji GNU tar dozvíte
 co už dost možná stejně víte, případně co jste asi ani nechtěli vědět.

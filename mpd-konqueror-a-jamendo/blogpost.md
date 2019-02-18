@@ -1,3 +1,10 @@
+---
+title: MPD, Konqueror a Jamendo
+author: marbu
+lang: cs-CZ
+rights: cc by-sa 4.0
+...
+
 Nedávno jsem znovu objevil [Jamendo](http://www.jamendo.com) a jako
 uživatel konqueroru a
 [mpd](http://www.abclinuxu.cz/software/multimedia/audio/prehravace/mpd)

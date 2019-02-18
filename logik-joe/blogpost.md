@@ -1,3 +1,10 @@
+---
+title: Logik Joe
+author: marbu
+lang: cs-CZ
+rights: cc by-sa 4.0
+...
+
 Znovu jsem si po dlouhé době přečetl sci-fi povídku *Logik Joe* a vzpomněl jsem
 si při tom na [Bystroushaakův zápisek
 Budoucnost](http://www.abclinuxu.cz/blog/bystroushaak/2016/12/budoucnost).

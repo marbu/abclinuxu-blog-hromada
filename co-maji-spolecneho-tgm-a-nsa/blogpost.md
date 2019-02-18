@@ -1,3 +1,10 @@
+---
+title: Co mají společného TGM a NSA
+author: marbu
+lang: cs-CZ
+rights: cc by-sa 4.0
+...
+
 Blbá otázka, že? A odpověď není, že mají třípísmenkovou zkratku.
 
 <!--break-->
