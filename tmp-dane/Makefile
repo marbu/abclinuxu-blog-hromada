@@ -1,4 +1,4 @@
-PANDOCFLAGS=-f markdown
+PANDOCFLAGS=-f markdown --filter pandoc-codeblock-include
 
 preview.html: blogpost.md
 	pandoc -s --toc -t html $(PANDOCFLAGS) $? -o $@
