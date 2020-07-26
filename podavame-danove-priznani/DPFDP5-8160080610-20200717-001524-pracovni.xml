@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pisemnost nazevSW="EPO MF ČR" verzeSW="41.10.5">
+<DPFDP5 verzePis="06.02">
+<VetaD rok="2019" pln_moc="N" dokument="DP5" audit="N" c_ufo_cil="456" k_uladis="DPF" zdobd_od="01.01.2019" prop_zahr="N" zdobd_do="31.12.2019" dap_typ="B" />
+<VetaP ulice="Pražská" psc="40001" email="specimen.vzor@post.cz" k_stat="CZ" rod_c="8160080610" titul="Mgr." c_pop="257" c_obce="567892" c_orient="43" c_pracufo="2501" prijmeni="Specimen" stat="ČESKÁ REPUBLIKA" st_prislus="ČR" naz_obce="ÚSTÍ NAD LABEM-MĚSTO" jmeno="Vzor" />
+<VetaB priloh_celk="0" />
+</DPFDP5>
+</Pisemnost>
