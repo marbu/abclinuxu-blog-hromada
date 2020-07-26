@@ -12,14 +12,14 @@ Letos jsem tak jako každý rok podával daňové přiznání na poslední chví
 s tím rozdílem, že vzhledem k epidemii tato chvíle vycházela místo konce března
 na konec června. [Pak se ale termín opět posunul](https://www.financnisprava.cz/cs/financni-sprava/media-a-verejnost/tiskove-zpravy/tz-2020/terminy-pro-podani-a-zaplaceni-nekterych-dani-bez-sankci-10740),
 a mě se tak výjimečně
-podařilo podat přiznání více než měsíc před deadlinem. Popis jak tohle
+podařilo podat přiznání více než měsíc před termínem. Popis jak tohle
 funguje přes internet bez kvalifikovaného certifikátu nebo datové schránky by
 tak teď v červenci mohl být pořád možná
 někomu i užitečný, ale na druhou stranu stávající webová aplikace finanční
 správy je v provozu již více než 10 let, a moje hlavní motivace k sepsání
 tohoto zápisku je tak spíše poznamenat si jak to přesně funguje (což se může
-příští rok stále hodit, ale stejně tak může takový popis brzy mít i historickou
-hodnotu) a zároveň sondovat jaké zkušenosti s tím máte vy.
+příští rok navzdory připravovaným novinkám stále hodit) a zároveň sondovat
+jaké zkušenosti s tím máte vy.
 
 <!-- break -->
 
@@ -30,7 +30,7 @@ přílohy dodat.
 ## Možnosti podání daňového přiznání
 
 Pokud máte nějaký důvod podat *daňové přiznání z příjmů fyzických osob* sami
-místo toho aby to za vás udělal váš zaměstnavatel nebo daňový poradce, máte
+místo toho, aby to za vás udělal váš zaměstnavatel nebo daňový poradce, máte
 hned několik *oficiálních* možností.
 
 - Dojít si pro formulář na úřad, ručně to vypsat a fyzicky na úřadě odevzdat.
@@ -83,7 +83,7 @@ Pro *daň z příjmů fyzických osob* pak tato možnost existuje minimálně [o
 2009](http://mareklutonsky.blog.zive.cz/2009/03/jak-jsem-podaval-danove-priznani-pres-internet/)
 (viz také [heslo EPO na
 wikiverzitě](https://cs.wikiversity.org/wiki/Da%C5%88/EPO)).
-Součaná podoba webového rozhraní je pak zdá se min. z roku
+Současná podoba webového rozhraní je pak zdá se min. z roku
 [2015](https://www.youtube.com/watch?v=zt-24yaxAEc). Rozhodně tu tedy neřeším
 nějakou novinku.
 
@@ -315,7 +315,7 @@ uschovat, podíváme se na něj podrobněji. Jde o [PKCS
 v binárním [DER formátu](https://wiki.openssl.org/index.php/DER). Tento soubor
 tedy obsahuje jak samotná [data o podání v XML
 formátu](https://adisepo.mfcr.cz/adis/jepo/info/epo_podani.htm) (včetně
-vloženého XML našeho vyplňeného
+vloženého XML našeho vyplněného
 [DPFDP5](https://adisepo.mfcr.cz/adistc/adis/idpr_pub/epo2_info/popis_struktury_detail.faces?zkratka=DPFDP5)
 formuláře) tak podpis těchto dat s [X.509](https://en.wikipedia.org/wiki/X.509)
 certifikátem.
@@ -370,7 +370,7 @@ $ openssl verify -CAfile rca15_rsa.pem -untrusted 2qca16_rsa.pem potvrzeni.crt
 potvrzeni.crt: OK
 ~~~
 
-Pojďme ale udělat něco užitečnéjšího: data z PKCS#7 zprávy vytáhneme a
+Pojďme ale udělat něco užitečnějšího: data z PKCS#7 zprávy vytáhneme a
 zvalidujeme. Oba kořenové certifikáty ale kvůli tomu nejprve uložíme do jednoho
 PEM souboru:
 
@@ -429,7 +429,7 @@ důvod.
 Když pak porovnáme XML soubor, co jsme právě vytáhly z potvrzení, s tím, co
 jsme si stáhli při samotném podání, obsah souborů by se neměl nijak lišit.
 Porovnání s pracovní verzí formulářových dat uloženou těsně před podáním ale
-ukáže, že po podání se v datech oběví element `Kontrola`, všechna ostatní data
+ukáže, že po podání se v datech objeví element `Kontrola`, všechna ostatní data
 by ale měla zůstat stejná.
 
 ~~~ {.kod}
@@ -445,7 +445,7 @@ Tímto si tedy můžeme být jisti, že nám daňový portál opravdu podepsal d
 které jsme zadali do formuláře.
 
 Jak si ale můžeme mít jistotu, že na papírovém potvrzení (e-tiskopisu)
-podepisujeme stejnou informaci? Když se podobně na e-tiskopis znovu podíváme,
+podepisujeme stejnou informaci? Když se podrobně na e-tiskopis znovu podíváme,
 vidíme následující údaje, které podání identifikují:
 
 <center>![](etiskopis.png){ width=50% }</center>
@@ -453,7 +453,7 @@ vidíme následující údaje, které podání identifikují:
 Jak jsem poznamenal už výše, nejsem si jistý z čeho a jak se kontrolní
 číslo počítá, takže žádnou z těchto hodnot nelze brát jako checksum všech
 formulářových dat. Ale na druhou stranu máme tyto údaje spolu se všemi
-ostatními daty, co jsme vyplnily do formuláře, podepsané v PKCS#7 sobuboru od
+ostatními daty, co jsme vyplnily do formuláře, podepsané v PKCS#7 souboru od
 finanční správy. Můžeme se tak podívat, že tyto údaje z papírového potvrzení
 sedí k těm podepsaným:
 
@@ -466,7 +466,7 @@ $ xmlstarlet sel -t -v "/Pisemnost/Podani/@Cislo" potvrzeni.pkcs7-data.xml; echo
 17102653
 ~~~
 
-Jak daňová správa tak my tedy můžou zpětně dokázat, co bylo přesně ve
+Jak daňová správa tak my tedy můžeme zpětně dokázat, co bylo přesně ve
 formuláři podáno.
 
 A nakonec pro jistotu dodám, že o něco uživatelsky přívětivější je pro validaci
@@ -491,57 +491,81 @@ předvyplnit, ale ideálně bych si představoval, že pokud už se přihlásí
 občanku s čipem, žádné údaje které již stát o mě má nebudu vůbec muset znovu
 zadávat.
 
-<!-- TODO -->
+Naopak dobrá ukázka využitého potenciálu strojového zpracování při
+podání je vygenerování platebních pokynů včetně bankovního QR kódu.
+Další pozitivní aspekt systému EPO je možnost z aplikace stáhnout veškerá data
+nebo naopak data do aplikace nahrát. A to ve strukturovaném zdokumentovaném
+formátu, který používá otevřené standardy. Otvírá to možnosti počítačového
+zpracování dat, včetně tvorby pomocných aplikací (skutečně rozumně
+navržené aplikace na ulehčení vyplňování daňového přiznání generují XML data,
+která si pak můžete sami přes EPO podat).
 
-Pokaždé když si nejsem jistý co některá položka znamená a přečtu si nápovědu,
-...
+Použití XML jako datového formátu tu imho dává smysl. I když bohužel se autorům
+aplikace nepodařilo na řadě míst vyvarovat podivným hackům, jako např. při
+vkládání XML do XML. Ale to by bylo na další XML flamewar ...
 
-Jinak je ale aplikace EPO překvapivě rozumně navržená.
+Škoda jen, že alespoň některé části aplikace EPO nejsou státem zveřejněny jako
+open source knihovny, když už si to platíme z daní. Ještě více je ale škoda, že
+příslušné zdrojáky nevlastní ani samotný stát. [Informační systém
+ADIS](https://cs.wikipedia.org/wiki/Automatizovan%C3%BD_da%C5%88ov%C3%BD_informa%C4%8Dn%C3%AD_syst%C3%A9m),
+kde data vyplněná přes EPO nakonec skončí, totiž zaujímá přední postavení v
+[zástupu vendor lock-in systémů používané v naší státní
+správě](https://archiv.ihned.cz/c7-66631500-oo1d8-c11990f2918a0b9).
 
-Myslete si o XML co chcete, ale v tomto případě dává použití XML smysl. I když
-se bohužel autorům aplikace nepodařilo vyvarovat se nešvarům typu vkládání XML
-do XML s pomocí hex kódování.
-
-Některé rady na webu jsou také poměrně vtipné:
-https://epodpora.mfcr.cz/cs/seznam-okruhu/rozhrani-pro-treti-strany/kontrola-spravnosti-xml-souboru-podani-e-4385/app/UXVlc3Rpb25zfGNvbnRhY3QtZm9ybS5hc3B4P3NmPTE%3D
-
-Škoda jen, že např. software který z formulářových XML dat vytvoří pdf
-reprezentaci formuláře není
-
-Daňové kalkulačky
-
-Proč nemám datovou schránku
-
-- negativní motivace lidí
-- https://www.lupa.cz/clanky/elektronicky-bic-na-danove-poplatniky-by-mohl-zmirnit/
+Dále je těžké pochopit, proč stát lidi k používání el. podání nijak
+pozitivně nemotivuje. Už jen to, že na úřadě nikdo nemusí formuláře ručně
+přepisovat do počítače musí finančáku ušetřit spoustu času. Stát ale
+"motivuje" jen ve speciálních případech, a pouze sankcemi. Pokud např. máte
+datovou schránku a podáte přiznání jiným způsobem, [automaticky vám vzniká
+neprominutelná pokuta ve výši 2000
+Kč](https://www.zakonyprolidi.cz/cs/2009-280#p247a-2).
+[Když ale povinnost používat datovou schránku nedodrží stát, nezbývá vám než se
+v případě problémů bránit zpětně u
+soudu](https://ekonom.ihned.cz/c7-66477830-oo1d8-d62cf79c4b4eff7). Problém
+tohoto typu [už stihl řešit i Nejvyšší správní
+soud](http://nssoud.cz/files/SOUDNI_VYKON/2016/0026_3As__1600045_20161209104735_prevedeno.pdf),
+takže by dnes snad mělo být jasné, že úřad použít datovou schránku prostě musí,
+a že tu nelze použít tzv. [fikci
+doručení](https://cs.wikipedia.org/wiki/Pr%C3%A1vn%C3%AD_fikce) a považovat
+nepřevzatý dopis za doručený. Na druhou stranu pokud ale dopis, co měl být
+poslán datovou schránkou, skutečně převezmete, legitimizujete tím chybný úřední
+postup a zaniká vám možnost si na něj dál stěžovat.
+Ve výsledku tak takové prostředí spíše od zřízení datové schránky
+odrazuje aniž by to propagaci el. podání nějak pomohlo.
 
 ## Budoucnost
 
-Jak jsme možná zaznamenali, připravuje se novela *daňového řádu*, která
-zahrnuje vznik online finančního úřadu a projektu [Moje
-daně](https://www.mojedane.cz/).
+Zhruba před rokem [se finanční správa pochlubila plánem, jak získat autorská
+práva k systému
+ADIS](https://www.financnisprava.cz/cs/financni-sprava/media-a-verejnost/tiskove-zpravy/tz-2019/zavislost-na-jedinem-dodavateli-IT-systemu-ADIS-po-30-letech-skonci-9969),
+vyřešit problém s vendor lockinem a umožnit jeho modernizaci. Drobný zádrhel
+ovšem je, že [na implementaci nového systému má ministerstvo financí omezený
+čas](https://archiv.ihned.cz/c7-66622840-oo1d8-c94189555e5996d), a tak teď
+těžko říct, jestli se to opravdu podaří vyřešit.
 
-<!-- TODO -->
+Kromě toho se už nějaký čas připravuje novela *daňového řádu*, která by mohla
+některé problémy zmiňované výše řešit. Automatická [pokuta za nepodání daňového
+přiznání pro držitele datových schránek by měla být
+omezena](https://www.lupa.cz/clanky/elektronicky-bic-na-danove-poplatniky-by-mohl-zmirnit/)
+a naopak při elektronickém podání by se měla lhůta pro podání prodloužit o
+měsíc.
 
-- <https://www.penize.cz/dan-z-prijmu-fyzickych-osob/414851-dane-konecne-vyridite-online-schillerove-vlajkova-lod-proplula>
-- <https://www.mfcr.cz/cs/verejny-sektor/dane/moje-dane/aktualni-informace>
+Novela také zahrnuje vznik tzv. "online finančního úřadu" [MOJE
+daně](https://www.mojedane.cz/), který vznikne rozšířením a
+modernizací současného systému [daňových informačních schránek](https://www.financnisprava.cz/cs/dane-elektronicky/danovy-portal/danova-informacni-schranka),
+o kterém jsem se tu zatím vůbec nezmiňoval. Pokud chápu [stručný popis nového
+portálu](https://www.penize.cz/dan-z-prijmu-fyzickych-osob/414851-dane-konecne-vyridite-online-schillerove-vlajkova-lod-proplula)
+dobře, půjde o další možnost jak daně podat, která by měla umožnit
+nejen předvyplnit data co finanční správa už ví, ale i dostat se ke stavu a
+údajům z předchozích podání a plateb. Mělo být také možné se do systému
+přihlásit i bez datové schránky, kvalifikovaného certifikátu nebo e-občanky.
+Jak to má ale přesně fungovat jsem nedohledal.
 
-## Reference
-
-- [Elektronická podání pro finanční
-  správu](https://adisepo.mfcr.cz/adistc/adis/idpr_epo/epo2/uvod/vstup.faces),
-  tj. aplikace EPO na Daňovém portálu
-- [Databáze daňových tiskopisů](https://www.financnisprava.cz/cs/danove-tiskopisy/databaze-aktualnich-danovych-tiskopisu)
-  včetně linků do aplikace EPO
-- [Přehled dokumentace pro služby daňového
-  portálu](https://adisepo.mfcr.cz/adistc/adis/idpr_pub/dpr_info/dokumentace.faces)
-  obsahuje seznam dokumentace k aplikaci EPO
-- [Struktury XML souborů EPO](https://adisepo.mfcr.cz/adistc/adis/idpr_pub/epo2_info/popis_struktury_seznam.faces)
-- [Obecný popis struktury souborů Podatelny
-  EPO](https://adisepo.mfcr.cz/adistc/adis/idpr_pub/epo2_info/PodatelnaEPO.pdf)
-  (včetně popisu podání písemnosti a PKCS#7 potvrzení)
-
-https://www.pravniprostor.cz/clanky/financni-pravo/elektronicka-komunikace-v-danovem-rizeni
+Já teď zvažuji možnosti, jak bych příště podal přiznání zcela elektronicky.
+Nová občanka s čipem vypadá na první pohled zajímavě, ale když jsem si začal
+dohledávat detaily, byl jsem z toho poněkud rozpačitý. Možná nakonec skončím
+u datové schránky. A co vy? Máte kvalifikovaný podpisový certifikát, datovou
+schránku nebo novou občanku s čipem?
 
 <!-- Anketa
 
