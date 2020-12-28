@@ -19,11 +19,23 @@ from collections import defaultdict
 import argparse
 import sys
 
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 
 
 DATA_FILE = "preklady.tsv"
+
+
+LABELS = {
+    'neurčeno': '#8a8a8a',
+    'adaptace: dle Německé předlohy': '#aeae00',
+    'adaptace: dle Ruské předlohy': '#da0000',
+    'adaptace: Pleva': '#ff60f5',
+    'adaptace: jiná': '#ffaa00',
+    'překlad: Lounský, Svákovský': '#7dd37e',
+    'překlad: Vyskočil': '#00742e',
+    }
 
 
 def classify(edition_type, author):
@@ -118,5 +130,10 @@ if __name__ == '__main__':
     chart_df = chart_df.reindex(sorted(chart_df.columns), axis=1)
 
     # plotting
-    chart_df.T.plot(kind='bar', stacked=True)
+    matplotlib.style.use('ggplot')
+    color_list = []
+    for idx in chart_df.index:
+        color_list.append(LABELS[idx])
+    chart_df.T.plot(kind='bar', stacked=True, color=color_list)
+    plt.title("Počet českých edic Robinsona vydaných v daném období")
     plt.savefig(args.output)
