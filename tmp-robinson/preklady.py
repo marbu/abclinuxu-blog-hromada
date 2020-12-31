@@ -32,6 +32,7 @@ LABELS = {
     'adaptace: dle Německé předlohy': '#aeae00',
     'adaptace: dle Ruské předlohy': '#da0000',
     'adaptace: Pleva': '#ff60f5',
+    'adaptace: Novotný': '#ad7300',
     'adaptace: jiná': '#ffaa00',
     'překlad: Lounský, Svákovský': '#7dd37e',
     'překlad: Vyskočil': '#00742e',
@@ -47,6 +48,8 @@ def classify(edition_type, author):
             ad_type = "dle Ruské předlohy"
         elif "Pleva" in author:
             ad_type = "Pleva"
+        elif "Novotný" in author:
+            ad_type = "Novotný"
         return f"adaptace: {ad_type}"
     if edition_type == "translation":
         translator = "jiný"
