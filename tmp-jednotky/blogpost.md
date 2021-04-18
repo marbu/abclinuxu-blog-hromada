@@ -146,12 +146,41 @@ example2.adb:10:11: right-hand side has dimension [L**2]
 gnatmake: "example2.adb" compilation error
 ```
 
+Taková podpora jednotek je pak někde mezi implementací přímo v jazyce, a pouhou
+knihovnou.
+
 ## F\#
 
-Asi jediný programovací jazyk s přímou podporou pro práci s jednotkami, o
-kterém jste možná už někdy slyšeli, je `F#`.
+Jeden z mála programovacích jazyků s přímou podporou pro práci s jednotkami, o
+kterém jste možná už někdy slyšeli, je funcionální jazyk
+[F#](https://en.wikipedia.org/wiki/F_Sharp_(programming_language)).
+Typový systém tohoto jazyka totiž umožňuje s jednotkami přímo pracovat, takže
+např. typ `float<m>` reprezentuje desetiné číslo pro počet metrů, zatímco
+`float` je desetinné číslo bez jednotky.
+Popis jak to funguje najdete na stránce [Units of
+measure](https://fsharpforfunandprofit.com/posts/units-of-measure/).
 
-[Units of measure](https://fsharpforfunandprofit.com/posts/units-of-measure/)
+Předchozí příklad přepsaný do jazyka F# by vypadal nějak takto:
+
+```
+$ nl Program.fs
+     1	[<Measure>] type m
+     2	
+     3	let len_a = 10.0<m>
+     4	let len_b = 15.0<m>
+     5	let len_sum : float<m>   = len_a + len_b // ok
+     6	let surface : float<m^2> = len_a * len_b // ok
+     7	let len_c   : float<m>   = len_a * len_b // invalid
+```
+
+A když se jej pokusíme přeložit, skončíme na očekávané chybě v jednotkách:
+
+```
+$ dotnet run
+/home/martin/projects/hello-fsharp/Program.fs(7,36): error FS0001: The unit of measure 'm' does not match the unit of measure 'm ^ 2' [/home/martin/projects/hello-fsharp/hello-fsharp.fsproj]
+
+The build failed. Fix the build errors and run again.
+```
 
 ## Python
 
