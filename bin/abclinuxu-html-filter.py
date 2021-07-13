@@ -38,11 +38,14 @@ ALLOWED_TAGS = [
     "th",
     "tr",
     "td",
+    "img",
+    "center",
     ]
 
 
 ALLOWED_ATTRIBUTES = {
     "a": {"href": None}, # spec. case: None means that href can have any value
+    "img": {"src": None},
     "pre": {"class": ["kod"]},
     }
 
