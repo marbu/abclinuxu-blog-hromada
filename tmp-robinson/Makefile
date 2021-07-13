@@ -6,8 +6,11 @@ preview.html: blogpost.md
 robinson.epub: blogpost.md
 	pandoc -s --toc $(PANDOCFLAGS) -t epub $< -o $@
 
-blogpost.html: blogpost.md
-	pandoc $(PANDOCFLAGS) -t html $< -o $@
+blogpost.tmp.html: blogpost.md
+	pandoc -f markdown -t html $(PANDOCFLAGS) $? -o $@
+
+blogpost.html: blogpost.tmp.html
+	../bin/abclinuxu-html-filter.py $? -o $@
 
 clean:
-	rm -f blogpost.html preview.html
+	rm -f blogpost.html blogpost.tmp.html preview.html
