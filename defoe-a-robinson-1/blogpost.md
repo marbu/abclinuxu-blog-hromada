@@ -10,9 +10,10 @@ rights: cc by-sa 4.0
 
 K tomu abych se zabýval Danielem Defoe a přečetl jeho Robinsona Crusoe mě
 kdysi vyprovokoval pořad Českého rozhlasu [Po stopách Robinsona Crusoe a
-dalších britských výstředníků](http://prehravac.rozhlas.cz/audio/3332404) z
-roku 2015, kde jeden z hostů zmiňuje, že Robinson je ve skutečnosti docela jiná
-kniha, než kterou si pamatuje ze základní školy. Když jsem si pak k tomu
+dalších britských
+výstředníků](https://plus.rozhlas.cz/britsti-excentrici-kteri-zmenili-svet-6602052)
+z roku 2015, kde Václav Cílek zmiňuje, že Robinson je ve skutečnosti docela
+jiná kniha, než kterou si pamatuje ze základní školy. Když jsem si pak k tomu
 dohledával další informace, došlo mi, že jde o mnohem zajímavější téma než bych
 původně čekal. Konkrétně v tomto zápisku se dozvíte, co mě zaujalo na
 Defoeových mystifikacích a době, ve které žil.
@@ -373,7 +374,7 @@ Daniel Defoe:
 * Heslo [Daniel Defoe](https://en.wikipedia.org/wiki/Daniel_Defoe) na anglické
   Wikipedii
 * Pořad Českého rozhlasu *Leonardo Plus* [Po stopách Robinsona Crusoe a dalších
-  britských výstředníků](http://prehravac.rozhlas.cz/audio/3332404)
+  britských výstředníků](https://plus.rozhlas.cz/britsti-excentrici-kteri-zmenili-svet-6602052)
 * BBC Radio Drama [Defoe: Merchant, Writer, Convict,
   Spy](https://www.bbc.co.uk/programmes/b07j7nv3) by Philip Palmer (na webu
   BBC už není tento pořad dostupný, ale dá se sehnat např. [na audible v
