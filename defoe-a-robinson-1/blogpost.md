@@ -27,7 +27,7 @@ A abych si zjednodušil práci, v textu budu
 ignorovat fakt, že Defoe po úspěchu Robinsona napsal ještě další 2 díly (tedy
 až na pár výjimek, kdy se mi to naopak hodí).
 
-## Robinson Crusone jako mystifikace
+## Robinson Crusoe jako mystifikace
 
 Hned celý název prvního vydání Robinsona, které vyšlo v roce 1719 v Londýně,
 stojí za povšimnutí:
@@ -211,7 +211,7 @@ Danielem Defoe a zbytkem tohoto zápisku (resp. zápisků).
 Už jen z takového strohého přehledu vidíme, že to byla pro Londýn a Anglii
 obecně docela krušná a formující doba. Na druhou stranu, která éra byla
 idylická, prostá zvratů a katastrof?
-Defoe se narodi a žil v Londýně, a tak v dětství na vlastní kůži zažil
+Defoe se narodil a žil v Londýně, a tak v dětství na vlastní kůži zažil
 poslední velkou morovou epidemii, a o rok později Velký požár ([wikipedia
 tvrdí](https://en.wikipedia.org/wiki/Daniel_Defoe#cite_note-west-9), že
 většina domů v Defoově sousedství shořela). V dospělosti pak neměl nouzi o
