@@ -138,5 +138,5 @@ if __name__ == '__main__':
     for idx in chart_df.index:
         color_list.append(LABELS[idx])
     chart_df.T.plot(kind='bar', stacked=True, color=color_list)
-    plt.title("Počet českých edic Robinsona vydaných v daném období")
+    plt.xticks(rotation=45)
     plt.savefig(args.output)
