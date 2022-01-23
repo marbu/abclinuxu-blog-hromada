@@ -7,7 +7,7 @@ preklady.png: preklady.py preklady.tsv
 	./preklady.py -o $@
 
 blogpost.tmp.html: blogpost.md preklady.png
-	pandoc $(PANDOCFLAGS) -t html $? -o $@
+	pandoc $(PANDOCFLAGS) -t html $< -o $@
 
 blogpost.html: blogpost.tmp.html
 	../bin/abclinuxu-html-filter.py $? -o $@
