@@ -66,7 +66,7 @@ vakuum nemohlo vyhovovat jak Stationer's, novým tiskařským firmám ani samotn
 autorům, a tak přirozeně odstartoval boj o novou podobu copyrightu, který trval
 téměř 15 let. Daniel Defoe se během této doby k věci opakovaně vyjadřoval jak v
 samostatných textech tak později novinových příspěvcích. Ve svém [Eseji o
-regulaci tisku](http://www.copyrighthistory.org/cam/tools/request/showRecord?id=commentary_uk_1704)
+regulaci tisku](https://www.copyrighthistory.org/cam/tools/request/showRecord.php?id=commentary_uk_1704)
 z roku 1704 věnuje Defoe nejvíce prostoru problematice svobody tisku a kritice
 svévolné cenzury, ale zároveň zdůrazňuje i důležitost řešení problému tzv.
 *tiskového pirátství* (press-piracy). Řešení obou těchto problémů Defoe vidí
