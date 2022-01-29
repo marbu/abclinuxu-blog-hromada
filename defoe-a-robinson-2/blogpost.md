@@ -354,7 +354,7 @@ Daniel Defoe:
 * Heslo [Daniel Defoe](https://en.wikipedia.org/wiki/Daniel_Defoe) na anglické
   Wikipedii
 * Pořad Českého rozhlasu *Leonardo Plus* [Po stopách Robinsona Crusoe a dalších
-  britských výstředníků](http://prehravac.rozhlas.cz/audio/3332404)
+  britských výstředníků](https://plus.rozhlas.cz/britsti-excentrici-kteri-zmenili-svet-6602052)
 
 Defoe a tehdejší regulace knihtisku:
 
